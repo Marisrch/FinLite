@@ -74,7 +74,6 @@ public class Empreendedor {
     public void setTelefoneEmpreendedor(
             String telefoneEmpreendedor) {
 
-        this.telefoneEmpreendedor
-                = telefoneEmpreendedor;
+        this.telefoneEmpreendedor = telefoneEmpreendedor;
     }
 }
