@@ -1,3 +1,12 @@
-/nbproject/private/
-/dist/
-/build/
+# Maven
+target/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Java
+*.class
+
+# Logs
+*.log
