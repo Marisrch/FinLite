@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Painel', ~{::conteudo})}">
+
 <body>
+
+<section th:fragment="conteudo">
+
+  <h1>Painel financeiro</h1>
+
+  <p>
+    Acompanhe as informações financeiras
+    do seu negócio em um só lugar.
+  </p>
+
+</section>
 
 </body>
 </html>

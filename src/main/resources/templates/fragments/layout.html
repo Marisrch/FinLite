@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(titulo, conteudo)">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title th:text="${titulo} + ' | FinLite'">FinLite</title>
+
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<!-- Cabeçalho compartilhado -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!-- Estrutura principal -->
+<div class="app-layout">
+
+  <!-- Menu lateral -->
+  <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+  <!-- Conteúdo específico de cada página -->
+  <main class="main-content">
+    <div th:replace="${conteudo}">
+      Conteúdo da página
+    </div>
+  </main>
+
+</div>
+
+<script th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

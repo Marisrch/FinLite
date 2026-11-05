@@ -94,3 +94,19 @@ body {
     background: #fff0f0;
     color: #c62828;
 }
+
+/* Estrutura principal da aplicação */
+
+.app-layout {
+    display: flex;
+    min-height: calc(100vh - 75px);
+}
+
+/* Conteúdo das páginas */
+
+.main-content {
+    flex: 1;
+    padding: 35px;
+    min-width: 0;
+    background: #f8f8f8;
+}
