@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Nova despesa', ~{::conteudo})}">
+
+<body>
+
+<section th:fragment="conteudo">
+
+    <div class="page-header">
+        <div>
+            <h1>Nova despesa</h1>
+            <p>Registre uma despesa do seu negócio.</p>
+        </div>
+    </div>
+
+    <div th:if="${erro}" class="alert alert-error"
+         th:text="${erro}">
+    </div>
+
+    <div th:if="${idEmpreendedor != null}">
+
+        <form th:action="@{/despesas/salvar}"
+              th:object="${lancamento}"
+              method="post">
+
+            <input type="hidden"
+                   name="idEmpreendedor"
+                   th:value="${idEmpreendedor}">
+
+            <input type="hidden"
+                   th:field="*{tipoLancamento}"
+                   value="DESPESA">
+
+            <div class="form-group">
+                <label for="dataLancamento">Data da despesa</label>
+                <input type="date"
+                       id="dataLancamento"
+                       th:field="*{dataLancamento}"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="descricaoLancamento">Descrição</label>
+                <input type="text"
+                       id="descricaoLancamento"
+                       th:field="*{descricaoLancamento}"
+                       maxlength="255"
+                       placeholder="Ex.: Compra de novelos de linha"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="categoriaLancamento">Categoria</label>
+                <input type="text"
+                       id="categoriaLancamento"
+                       th:field="*{categoriaLancamento}"
+                       maxlength="50"
+                       placeholder="Ex.: Materiais, contas, aluguel"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="idMaterial">
+                    Material relacionado
+                    <span>(opcional)</span>
+                </label>
+
+                <select id="idMaterial" name="idMaterial">
+                    <option value="">
+                        Nenhum material — despesa comum
+                    </option>
+
+                    <option th:each="material : ${materiais}"
+                            th:value="${material.idMaterial}"
+                            th:text="${material.nomeMaterial}">
+                    </option>
+                </select>
+
+                <small>
+                    Selecione um material quando esta despesa
+                    representar uma compra. O estoque será atualizado
+                    automaticamente.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="quantidadeLancamento">
+                    Quantidade comprada
+                </label>
+                <input type="number"
+                       id="quantidadeLancamento"
+                       th:field="*{quantidadeLancamento}"
+                       min="0.01"
+                       step="0.01"
+                       placeholder="Ex.: 5">
+            </div>
+
+            <div class="form-group">
+                <label for="custoUnitarioLancamento">
+                    Custo unitário (R$)
+                </label>
+                <input type="number"
+                       id="custoUnitarioLancamento"
+                       th:field="*{custoUnitarioLancamento}"
+                       min="0"
+                       step="0.01"
+                       placeholder="Ex.: 10,00">
+            </div>
+
+            <div class="form-group">
+                <label for="valorTotalLancamento">
+                    Valor total da despesa (R$)
+                </label>
+                <input type="number"
+                       id="valorTotalLancamento"
+                       th:field="*{valorTotalLancamento}"
+                       min="0.01"
+                       step="0.01"
+                       placeholder="Ex.: 50,00"
+                       required>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/despesas}" class="btn-secondary">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="btn-primary">
+                    Salvar despesa
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+</body>
+</html>

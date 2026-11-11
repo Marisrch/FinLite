@@ -8,8 +8,41 @@
 <section th:fragment="conteudo">
 
     <h1>Estoque</h1>
+    <p>Consulte os materiais cadastrados e suas quantidades disponíveis.</p>
 
-    <p>Consulte os materiais e acompanhe as movimentações do estoque.</p>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Material</th>
+            <th>Marca</th>
+            <th>Categoria</th>
+            <th>Cor</th>
+            <th>Quantidade</th>
+            <th>Quantidade mínima</th>
+            <th>Unidade</th>
+            <th>Custo unitário</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="material : ${materiais}">
+            <td th:text="${material.idMaterial}"></td>
+            <td th:text="${material.nomeMaterial}"></td>
+            <td th:text="${material.marcaMaterial}"></td>
+            <td th:text="${material.categoriaMaterial}"></td>
+            <td th:text="${material.corMaterial}"></td>
+            <td th:text="${#numbers.formatDecimal(material.quantidadeEstoqueMaterial, 1, 2)}"></td>
+            <td th:text="${#numbers.formatDecimal(material.quantidadeMinimaMaterial, 1, 2)}"></td>
+            <td th:text="${material.unidadeMedidaMaterial}"></td>
+            <td th:text="${material.custoUnitarioMaterial != null ? #numbers.formatDecimal(material.custoUnitarioMaterial, 1, 2) : '-'}"></td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(materiais)}">
+            <td colspan="9">Nenhum material cadastrado.</td>
+        </tr>
+        </tbody>
+    </table>
 
 </section>
 

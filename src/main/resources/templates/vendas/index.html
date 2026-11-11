@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Vendas', ~{::conteudo})}">
+
 <body>
+
+<section th:fragment="conteudo">
+
+    <h1>Vendas</h1>
+    <p>Gerencie as vendas do seu negócio.</p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Produto / Peça</th>
+            <th>Valor</th>
+            <th>Pagamento</th>
+            <th>Status</th>
+            <th>Entrega</th>
+            <th>Registro</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="venda : ${vendas}">
+            <td th:text="${venda.idVenda}"></td>
+            <td th:text="${venda.nomeCliente}"></td>
+            <td th:text="${venda.produtoPeca}"></td>
+            <td th:text="${#numbers.formatDecimal(venda.valorVenda, 1, 2)}"></td>
+            <td th:text="${venda.formaPagamento}"></td>
+            <td th:text="${venda.statusVenda}"></td>
+            <td th:text="${#temporals.format(venda.dataEntrega, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(venda.dataRegistro, 'dd/MM/yyyy')}"></td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(vendas)}">
+            <td colspan="8">Nenhuma venda cadastrada.</td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
 
 </body>
 </html>

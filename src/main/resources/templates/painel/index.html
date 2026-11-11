@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org"
@@ -7,12 +8,129 @@
 
 <section th:fragment="conteudo">
 
-  <h1>Painel financeiro</h1>
+  <div class="page-header">
+    <div>
+      <h1>Painel financeiro</h1>
+      <p>Acompanhe os resultados e a situação do seu negócio.</p>
+    </div>
+  </div>
 
-  <p>
-    Acompanhe as informações financeiras
-    do seu negócio em um só lugar.
-  </p>
+  <div class="dashboard-grid">
+
+    <div class="dashboard-card">
+      <h3>Receitas</h3>
+      <p class="dashboard-value"
+         th:text="${'R$ ' + #numbers.formatDecimal(totalReceitas, 1, 'POINT', 2, 'COMMA')}">
+        R$ 0,00
+      </p>
+      <small>Vendas concluídas e outras receitas</small>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Despesas</h3>
+      <p class="dashboard-value"
+         th:text="${'R$ ' + #numbers.formatDecimal(totalDespesas, 1, 'POINT', 2, 'COMMA')}">
+        R$ 0,00
+      </p>
+      <small>Total de despesas registradas</small>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Saldo</h3>
+      <p class="dashboard-value"
+         th:text="${'R$ ' + #numbers.formatDecimal(saldo, 1, 'POINT', 2, 'COMMA')}">
+        R$ 0,00
+      </p>
+      <small>Receitas menos despesas</small>
+    </div>
+
+    <div class="dashboard-card">
+      <h3>Valor em estoque</h3>
+      <p class="dashboard-value"
+         th:text="${'R$ ' + #numbers.formatDecimal(valorEstoque, 1, 'POINT', 2, 'COMMA')}">
+        R$ 0,00
+      </p>
+      <small>Quantidade atual × custo unitário</small>
+    </div>
+
+  </div>
+
+  <div class="dashboard-section">
+
+    <h2>Resumo financeiro</h2>
+
+    <div class="dashboard-summary">
+      <p>
+        <span>Receitas de vendas concluídas</span>
+        <strong th:text="${'R$ ' + #numbers.formatDecimal(totalVendas, 1, 'POINT', 2, 'COMMA')}">
+          R$ 0,00
+        </strong>
+      </p>
+
+      <p>
+        <span>Outras receitas</span>
+        <strong th:text="${'R$ ' + #numbers.formatDecimal(totalOutrasReceitas, 1, 'POINT', 2, 'COMMA')}">
+          R$ 0,00
+        </strong>
+      </p>
+
+      <p>
+        <span>Total de despesas</span>
+        <strong th:text="${'R$ ' + #numbers.formatDecimal(totalDespesas, 1, 'POINT', 2, 'COMMA')}">
+          R$ 0,00
+        </strong>
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="dashboard-section">
+
+    <h2>Estoque</h2>
+
+    <p>
+      Materiais cadastrados:
+      <strong th:text="${quantidadeMateriais}">0</strong>
+    </p>
+
+    <p>
+      Materiais no nível mínimo ou abaixo:
+      <strong th:text="${quantidadeMateriaisBaixoEstoque}">0</strong>
+    </p>
+
+    <div th:if="${#lists.isEmpty(materiaisBaixoEstoque)}">
+      <p>Todos os materiais estão acima do estoque mínimo.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(materiaisBaixoEstoque)}">
+
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>Material</th>
+          <th>Estoque atual</th>
+          <th>Quantidade mínima</th>
+          <th>Unidade</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="material : ${materiaisBaixoEstoque}">
+          <td th:text="${material.nomeMaterial}"></td>
+
+          <td th:text="${material.quantidadeEstoqueMaterial}"></td>
+
+          <td th:text="${material.quantidadeMinimaMaterial}"></td>
+
+          <td th:text="${material.unidadeMedidaMaterial}"></td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
 
 </section>
 

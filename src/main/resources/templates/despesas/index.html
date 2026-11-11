@@ -8,8 +8,35 @@
 <section th:fragment="conteudo">
 
     <h1>Despesas</h1>
+    <p>Consulte os lançamentos financeiros do seu negócio.</p>
 
-    <p>Registre e acompanhe as despesas do seu negócio.</p>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Data</th>
+            <th>Valor total</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="lancamento : ${lancamentos}">
+            <td th:text="${lancamento.idLancamento}"></td>
+            <td th:text="${lancamento.tipoLancamento}"></td>
+            <td th:text="${lancamento.descricaoLancamento}"></td>
+            <td th:text="${lancamento.categoriaLancamento}"></td>
+            <td th:text="${#temporals.format(lancamento.dataLancamento, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#numbers.formatDecimal(lancamento.valorTotalLancamento, 1, 2)}"></td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(lancamentos)}">
+            <td colspan="6">Nenhum lançamento financeiro cadastrado.</td>
+        </tr>
+        </tbody>
+    </table>
 
 </section>
 
