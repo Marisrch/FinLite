@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Estoque', ~{::conteudo})}">
+
 <body>
+
+<section th:fragment="conteudo">
+
+    <h1>Estoque</h1>
+
+    <p>Consulte os materiais e acompanhe as movimentações do estoque.</p>
+
+</section>
 
 </body>
 </html>

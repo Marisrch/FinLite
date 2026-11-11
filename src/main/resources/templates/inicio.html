@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FinLite | Início</title>
-</head>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Vendas', ~{::conteudo})}">
+
 <body>
 
-<h1>Bem-vindo ao FinLite!</h1>
-<p>Seu controle financeiro simples e organizado.</p>
+<section th:fragment="conteudo">
+
+  <h1>Vendas</h1>
+
+  <p>Gerencie as vendas e acompanhe os pedidos do seu negócio.</p>
+
+</section>
 
 </body>
 </html>

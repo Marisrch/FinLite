@@ -15,7 +15,7 @@ public class Empreendedor {
     @Column(name = "nome_empreendedor", nullable = false, length = 100)
     private String nomeEmpreendedor;
 
-    @Column(name = "cpf_empreendedor", unique = true, length = 11)
+    @Column(name = "cpf_empreendedor", unique = true,nullable = false, length = 11)
     private String cpfEmpreendedor;
 
     @Column(name = "email_empreendedor", length = 100)
