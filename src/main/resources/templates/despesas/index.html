@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org"
@@ -7,8 +8,16 @@
 
 <section th:fragment="conteudo">
 
-    <h1>Despesas</h1>
-    <p>Consulte os lançamentos financeiros do seu negócio.</p>
+    <div class="page-header">
+        <div>
+            <h1>Despesas</h1>
+            <p>Consulte e gerencie os lançamentos financeiros do seu negócio.</p>
+        </div>
+
+        <a th:href="@{/despesas/novo}" class="btn-primary">
+            + Nova despesa
+        </a>
+    </div>
 
     <table>
         <thead>
@@ -33,7 +42,7 @@
         </tr>
 
         <tr th:if="${#lists.isEmpty(lancamentos)}">
-            <td colspan="6">Nenhum lançamento financeiro cadastrado.</td>
+            <td colspan="6">Nenhuma despesa cadastrada.</td>
         </tr>
         </tbody>
     </table>

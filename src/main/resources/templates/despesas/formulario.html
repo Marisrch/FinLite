@@ -5,7 +5,6 @@
       th:replace="~{fragments/layout :: layout('Nova despesa', ~{::conteudo})}">
 
 <body>
-
 <section th:fragment="conteudo">
 
     <div class="page-header">
@@ -19,123 +18,145 @@
          th:text="${erro}">
     </div>
 
-    <div th:if="${idEmpreendedor != null}">
+    <div th:if="${sucesso}" class="alert alert-success"
+         th:text="${sucesso}">
+    </div>
 
-        <form th:action="@{/despesas/salvar}"
-              th:object="${lancamento}"
-              method="post">
+    <form th:if="${idEmpreendedor != null}"
+          th:action="@{/despesas/salvar}"
+          th:object="${lancamento}"
+          method="post">
 
-            <input type="hidden"
-                   name="idEmpreendedor"
-                   th:value="${idEmpreendedor}">
+        <input type="hidden"
+               name="idEmpreendedor"
+               th:value="${idEmpreendedor}">
 
-            <input type="hidden"
-                   th:field="*{tipoLancamento}"
-                   value="DESPESA">
+        <input type="hidden"
+               name="tipoLancamento"
+               value="DESPESA">
 
-            <div class="form-group">
-                <label for="dataLancamento">Data da despesa</label>
-                <input type="date"
-                       id="dataLancamento"
-                       th:field="*{dataLancamento}"
-                       required>
-            </div>
+        <div class="form-group">
+            <label for="dataLancamento">Data da despesa</label>
+            <input type="date"
+                   id="dataLancamento"
+                   th:field="*{dataLancamento}"
+                   required>
+        </div>
 
-            <div class="form-group">
-                <label for="descricaoLancamento">Descrição</label>
-                <input type="text"
-                       id="descricaoLancamento"
-                       th:field="*{descricaoLancamento}"
-                       maxlength="255"
-                       placeholder="Ex.: Compra de novelos de linha"
-                       required>
-            </div>
+        <div class="form-group">
+            <label for="descricaoLancamento">Descrição</label>
+            <input type="text"
+                   id="descricaoLancamento"
+                   th:field="*{descricaoLancamento}"
+                   maxlength="255"
+                   placeholder="Ex.: Compra de novelos de linha"
+                   required>
+        </div>
 
-            <div class="form-group">
-                <label for="categoriaLancamento">Categoria</label>
-                <input type="text"
-                       id="categoriaLancamento"
-                       th:field="*{categoriaLancamento}"
-                       maxlength="50"
-                       placeholder="Ex.: Materiais, contas, aluguel"
-                       required>
-            </div>
+        <div class="form-group">
+            <label for="categoriaLancamento">Categoria</label>
+            <select id="categoriaLancamento"
+                    th:field="*{categoriaLancamento}"
+                    required>
+                <option value="">Selecione</option>
+                <option value="MATERIAIS">Materiais</option>
+                <option value="CONTAS">Contas</option>
+                <option value="ALUGUEL">Aluguel</option>
+                <option value="TRANSPORTE">Transporte</option>
+                <option value="MANUTENÇÃO">Manutenção</option>
+                <option value="OUTROS">Outros</option>
+            </select>
+        </div>
 
-            <div class="form-group">
-                <label for="idMaterial">
-                    Material relacionado
-                    <span>(opcional)</span>
-                </label>
+        <div class="form-group">
+            <label for="idMaterial">
+                Material relacionado
+                <span>(opcional)</span>
+            </label>
 
-                <select id="idMaterial" name="idMaterial">
-                    <option value="">
-                        Nenhum material — despesa comum
-                    </option>
+            <select id="idMaterial" name="idMaterial">
+                <option value="">
+                    Nenhum material — despesa comum
+                </option>
 
-                    <option th:each="material : ${materiais}"
-                            th:value="${material.idMaterial}"
-                            th:text="${material.nomeMaterial}">
-                    </option>
-                </select>
+                <option th:each="material : ${materiais}"
+                        th:value="${material.idMaterial}"
+                        th:text="${material.nomeMaterial}">
+                </option>
+            </select>
 
-                <small>
-                    Selecione um material quando esta despesa
-                    representar uma compra. O estoque será atualizado
-                    automaticamente.
-                </small>
-            </div>
+            <small>
+                Selecione um material somente quando a despesa
+                representar uma compra que deve atualizar o estoque.
+            </small>
+        </div>
 
-            <div class="form-group">
-                <label for="quantidadeLancamento">
-                    Quantidade comprada
-                </label>
-                <input type="number"
-                       id="quantidadeLancamento"
-                       th:field="*{quantidadeLancamento}"
-                       min="0.01"
-                       step="0.01"
-                       placeholder="Ex.: 5">
-            </div>
+        <div class="form-group">
+            <label for="quantidadeLancamento">
+                Quantidade comprada
+            </label>
 
-            <div class="form-group">
-                <label for="custoUnitarioLancamento">
-                    Custo unitário (R$)
-                </label>
-                <input type="number"
-                       id="custoUnitarioLancamento"
-                       th:field="*{custoUnitarioLancamento}"
-                       min="0"
-                       step="0.01"
-                       placeholder="Ex.: 10,00">
-            </div>
+            <input type="number"
+                   id="quantidadeLancamento"
+                   th:field="*{quantidadeLancamento}"
+                   min="0.01"
+                   step="0.01"
+                   placeholder="Ex.: 5">
 
-            <div class="form-group">
-                <label for="valorTotalLancamento">
-                    Valor total da despesa (R$)
-                </label>
-                <input type="number"
-                       id="valorTotalLancamento"
-                       th:field="*{valorTotalLancamento}"
-                       min="0.01"
-                       step="0.01"
-                       placeholder="Ex.: 50,00"
-                       required>
-            </div>
+            <small>
+                Preencha quando a despesa estiver relacionada
+                à compra de um material.
+            </small>
+        </div>
 
-            <div class="form-actions">
-                <a th:href="@{/despesas}" class="btn-secondary">
-                    Cancelar
-                </a>
+        <div class="form-group">
+            <label for="custoUnitarioLancamento">
+                Custo unitário (R$)
+            </label>
 
-                <button type="submit" class="btn-primary">
-                    Salvar despesa
-                </button>
-            </div>
+            <input type="number"
+                   id="custoUnitarioLancamento"
+                   th:field="*{custoUnitarioLancamento}"
+                   min="0"
+                   step="0.01"
+                   placeholder="Ex.: 10.00">
+        </div>
 
-        </form>
+        <div class="form-group">
+            <label for="valorTotalLancamento">
+                Valor total da despesa (R$)
+            </label>
+
+            <input type="number"
+                   id="valorTotalLancamento"
+                   th:field="*{valorTotalLancamento}"
+                   min="0.01"
+                   step="0.01"
+                   placeholder="Ex.: 50.00"
+                   required>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/despesas}" class="btn-secondary">
+                Cancelar
+            </a>
+
+            <button type="submit" class="btn-primary">
+                Salvar despesa
+            </button>
+        </div>
+
+    </form>
+
+    <div th:if="${idEmpreendedor == null}">
+        <p>Cadastre um empreendedor antes de registrar despesas.</p>
+
+        <a th:href="@{/empreendedores/novo}"
+           class="btn-primary">
+            Cadastrar empreendedor
+        </a>
     </div>
 
 </section>
-
 </body>
 </html>

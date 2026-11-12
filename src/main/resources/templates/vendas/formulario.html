@@ -7,10 +7,20 @@
 <body>
 <section th:fragment="conteudo">
 
-    <h1>Nova venda</h1>
-    <p>Preencha os dados para registrar uma venda.</p>
+    <div class="page-header">
+        <div>
+            <h1>Nova venda</h1>
+            <p>Preencha os dados para registrar uma venda.</p>
+        </div>
+    </div>
 
-    <p th:if="${erro}" th:text="${erro}"></p>
+    <div th:if="${erro}" class="alert alert-error"
+         th:text="${erro}">
+    </div>
+
+    <div th:if="${sucesso}" class="alert alert-success"
+         th:text="${sucesso}">
+    </div>
 
     <form th:if="${idEmpreendedor != null}"
           th:action="@{/vendas/salvar}"
@@ -21,41 +31,100 @@
                name="idEmpreendedor"
                th:value="${idEmpreendedor}">
 
-        <label>Nome do cliente</label>
-        <input type="text" th:field="*{nomeCliente}" required>
+        <div class="form-group">
+            <label for="nomeCliente">Nome do cliente</label>
+            <input type="text"
+                   id="nomeCliente"
+                   th:field="*{nomeCliente}"
+                   maxlength="100"
+                   placeholder="Nome do cliente"
+                   required>
+        </div>
 
-        <label>Produto / Peça</label>
-        <input type="text" th:field="*{produtoPeca}" required>
+        <div class="form-group">
+            <label for="produtoPeca">Produto / Peça</label>
+            <input type="text"
+                   id="produtoPeca"
+                   th:field="*{produtoPeca}"
+                   maxlength="100"
+                   placeholder="Ex.: Bolsa de crochê"
+                   required>
+        </div>
 
-        <label>Valor da venda</label>
-        <input type="number" step="0.01"
-               th:field="*{valorVenda}" min="0.01" required>
+        <div class="form-group">
+            <label for="valorVenda">Valor da venda (R$)</label>
+            <input type="number"
+                   id="valorVenda"
+                   th:field="*{valorVenda}"
+                   min="0.01"
+                   step="0.01"
+                   placeholder="Ex.: 150.00"
+                   required>
+        </div>
 
-        <label>Forma de pagamento</label>
-        <input type="text" th:field="*{formaPagamento}" required>
+        <div class="form-group">
+            <label for="formaPagamento">Forma de pagamento</label>
+            <select id="formaPagamento"
+                    th:field="*{formaPagamento}"
+                    required>
+                <option value="">Selecione</option>
+                <option value="PIX">PIX</option>
+                <option value="DINHEIRO">Dinheiro</option>
+                <option value="CARTÃO DE CRÉDITO">Cartão de crédito</option>
+                <option value="CARTÃO DE DÉBITO">Cartão de débito</option>
+                <option value="TRANSFERÊNCIA">Transferência</option>
+                <option value="OUTRO">Outro</option>
+            </select>
+        </div>
 
-        <label>Status</label>
-        <select th:field="*{statusVenda}" required>
-            <option value="">Selecione</option>
-            <option value="EM ANDAMENTO">Em andamento</option>
-            <option value="CONCLUÍDA">Concluída</option>
-            <option value="CANCELADA">Cancelada</option>
-        </select>
+        <div class="form-group">
+            <label for="statusVenda">Status da venda</label>
+            <select id="statusVenda"
+                    th:field="*{statusVenda}"
+                    required>
+                <option value="">Selecione</option>
+                <option value="EM ANDAMENTO">Em andamento</option>
+                <option value="CONCLUÍDA">Concluída</option>
+                <option value="CANCELADA">Cancelada</option>
+            </select>
+        </div>
 
-        <label>Data de entrega</label>
-        <input type="date" th:field="*{dataEntrega}" required>
+        <div class="form-group">
+            <label for="dataEntrega">Data de entrega</label>
+            <input type="date"
+                   id="dataEntrega"
+                   th:field="*{dataEntrega}"
+                   required>
+        </div>
 
-        <label>Data de registro</label>
-        <input type="date" th:field="*{dataRegistro}" required>
+        <div class="form-group">
+            <label for="dataRegistro">Data de registro</label>
+            <input type="date"
+                   id="dataRegistro"
+                   th:field="*{dataRegistro}"
+                   required>
+        </div>
 
-        <button type="submit">Salvar venda</button>
-        <a th:href="@{/vendas}">Cancelar</a>
+        <div class="form-actions">
+            <a th:href="@{/vendas}" class="btn-secondary">
+                Cancelar
+            </a>
+
+            <button type="submit" class="btn-primary">
+                Salvar venda
+            </button>
+        </div>
 
     </form>
 
-    <a th:href="@{/vendas}" th:if="${idEmpreendedor == null}">
-        Voltar para vendas
-    </a>
+    <div th:if="${idEmpreendedor == null}">
+        <p>Cadastre um empreendedor antes de registrar uma venda.</p>
+
+        <a th:href="@{/empreendedores/novo}"
+           class="btn-primary">
+            Cadastrar empreendedor
+        </a>
+    </div>
 
 </section>
 </body>
