@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org"
@@ -7,40 +8,77 @@
 
 <section th:fragment="conteudo">
 
-    <h1>Estoque</h1>
-    <p>Consulte os materiais cadastrados e suas quantidades disponíveis.</p>
+    <div class="page-header">
+        <div>
+            <h1>Estoque</h1>
+            <p>Acompanhe as quantidades disponíveis e identifique materiais que precisam de reposição.</p>
+        </div>
+
+        <a th:href="@{/materiais/novo}" class="btn-primary">
+            + Novo material
+        </a>
+    </div>
+
+    <div th:if="${sucesso}" class="alert-success"
+         th:text="${sucesso}"></div>
+
+    <div th:if="${erro}" class="alert-error"
+         th:text="${erro}"></div>
 
     <table>
         <thead>
         <tr>
-            <th>ID</th>
             <th>Material</th>
-            <th>Marca</th>
             <th>Categoria</th>
-            <th>Cor</th>
-            <th>Quantidade</th>
+            <th>Quantidade atual</th>
             <th>Quantidade mínima</th>
             <th>Unidade</th>
             <th>Custo unitário</th>
+            <th>Valor em estoque</th>
+            <th>Situação</th>
         </tr>
         </thead>
 
         <tbody>
+
         <tr th:each="material : ${materiais}">
-            <td th:text="${material.idMaterial}"></td>
+
             <td th:text="${material.nomeMaterial}"></td>
-            <td th:text="${material.marcaMaterial}"></td>
+
             <td th:text="${material.categoriaMaterial}"></td>
-            <td th:text="${material.corMaterial}"></td>
+
             <td th:text="${#numbers.formatDecimal(material.quantidadeEstoqueMaterial, 1, 2)}"></td>
+
             <td th:text="${#numbers.formatDecimal(material.quantidadeMinimaMaterial, 1, 2)}"></td>
+
             <td th:text="${material.unidadeMedidaMaterial}"></td>
-            <td th:text="${material.custoUnitarioMaterial != null ? #numbers.formatDecimal(material.custoUnitarioMaterial, 1, 2) : '-'}"></td>
+
+            <td th:text="${material.custoUnitarioMaterial != null
+                ? 'R$ ' + #numbers.formatDecimal(material.custoUnitarioMaterial, 1, 2)
+                : '-'}"></td>
+
+            <td th:text="${material.custoUnitarioMaterial != null
+                ? 'R$ ' + #numbers.formatDecimal(material.quantidadeEstoqueMaterial.multiply(material.custoUnitarioMaterial), 1, 2)
+                : '-'}"></td>
+
+            <td>
+                <span th:if="${material.quantidadeEstoqueMaterial.compareTo(material.quantidadeMinimaMaterial) <= 0}"
+                      class="status-baixo">
+                    Estoque baixo
+                </span>
+
+                <span th:unless="${material.quantidadeEstoqueMaterial.compareTo(material.quantidadeMinimaMaterial) <= 0}"
+                      class="status-normal">
+                    Normal
+                </span>
+            </td>
+
         </tr>
 
         <tr th:if="${#lists.isEmpty(materiais)}">
-            <td colspan="9">Nenhum material cadastrado.</td>
+            <td colspan="8">Nenhum material cadastrado.</td>
         </tr>
+
         </tbody>
     </table>
 
@@ -48,3 +86,7 @@
 
 </body>
 </html>
+
+<a th:href="@{/estoque/movimentacoes}" class="btn-secondary">
+    Histórico de movimentações
+</a>

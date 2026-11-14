@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Novo material', ~{::conteudo})}">
+
+<body>
+
+<section th:fragment="conteudo">
+
+    <div class="page-header">
+        <div>
+            <h1>Novo material</h1>
+            <p>Cadastre os materiais utilizados no seu negócio.</p>
+        </div>
+    </div>
+
+    <div th:if="${erro}" class="alert-error"
+         th:text="${erro}"></div>
+
+    <form th:if="${idEmpreendedor != null}"
+          th:action="@{/materiais/salvar}"
+          th:object="${material}"
+          method="post">
+
+        <input type="hidden"
+               name="idEmpreendedor"
+               th:value="${idEmpreendedor}">
+
+        <label>Nome do material</label>
+        <input type="text"
+               th:field="*{nomeMaterial}"
+               maxlength="100"
+               placeholder="Ex.: Linha de algodão"
+               required>
+
+        <label>Categoria</label>
+        <input type="text"
+               th:field="*{categoriaMaterial}"
+               maxlength="50"
+               placeholder="Ex.: Fios e tecidos"
+               required>
+
+        <label>Marca</label>
+        <input type="text"
+               th:field="*{marcaMaterial}"
+               maxlength="50"
+               placeholder="Ex.: Círculo">
+
+        <label>Cor</label>
+        <input type="text"
+               th:field="*{corMaterial}"
+               maxlength="50"
+               placeholder="Ex.: Vermelho">
+
+        <label>Unidade de medida</label>
+        <select th:field="*{unidadeMedidaMaterial}" required>
+            <option value="">Selecione</option>
+            <option value="UNIDADE">Unidade</option>
+            <option value="METRO">Metro</option>
+            <option value="CENTÍMETRO">Centímetro</option>
+            <option value="QUILOGRAMA">Quilograma</option>
+            <option value="GRAMA">Grama</option>
+            <option value="LITRO">Litro</option>
+            <option value="PACOTE">Pacote</option>
+            <option value="ROLO">Rolo</option>
+        </select>
+
+        <label>Quantidade mínima em estoque</label>
+        <input type="number"
+               th:field="*{quantidadeMinimaMaterial}"
+               min="0"
+               step="0.01"
+               placeholder="Ex.: 5"
+               required>
+
+        <label>Custo unitário estimado (R$)</label>
+        <input type="number"
+               th:field="*{custoUnitarioMaterial}"
+               min="0"
+               step="0.01"
+               placeholder="Ex.: 12.50">
+
+        <p class="form-info">
+            O material será cadastrado com estoque inicial zero.
+            As quantidades serão atualizadas pelas movimentações de estoque.
+        </p>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                Salvar material
+            </button>
+
+            <a th:href="@{/materiais}" class="btn-secondary">
+                Cancelar
+            </a>
+        </div>
+
+    </form>
+
+    <a th:if="${idEmpreendedor == null}"
+       th:href="@{/materiais}"
+       class="btn-secondary">
+        Voltar para materiais
+    </a>
+
+</section>
+
+</body>
+</html>

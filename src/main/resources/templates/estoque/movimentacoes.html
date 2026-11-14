@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Movimentações de estoque', ~{::conteudo})}">
+
+<body>
+<section th:fragment="conteudo">
+
+    <div class="page-header">
+        <div>
+            <h1>Movimentações de estoque</h1>
+            <p>Acompanhe as entradas e saídas dos materiais.</p>
+        </div>
+
+        <a th:href="@{/estoque/movimentacoes/novo}" class="btn-primary">
+            Registrar saída
+        </a>
+    </div>
+
+    <div th:if="${sucesso}" class="alert-success" th:text="${sucesso}"></div>
+    <div th:if="${erro}" class="alert-error" th:text="${erro}"></div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data</th>
+                <th>Material</th>
+                <th>Tipo</th>
+                <th>Quantidade</th>
+                <th>Motivo</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="movimentacao : ${movimentacoes}">
+                <td th:text="${movimentacao.idMovimentacao}"></td>
+
+                <td th:text="${#temporals.format(
+                    movimentacao.dataMovimentacao,
+                    'dd/MM/yyyy HH:mm'
+                )}"></td>
+
+                <td th:text="${movimentacao.material.nomeMaterial}"></td>
+
+                <td>
+                    <span th:if="${movimentacao.tipoMovimentacao == 'ENTRADA'}">
+                        Entrada
+                    </span>
+
+                    <span th:if="${movimentacao.tipoMovimentacao == 'SAIDA'}">
+                        Saída
+                    </span>
+                </td>
+
+                <td th:text="${#numbers.formatDecimal(
+                    movimentacao.quantidadeMovimentacao,
+                    1,
+                    2
+                )}"></td>
+
+                <td th:text="${movimentacao.motivoOrigem != null
+                    ? movimentacao.motivoOrigem
+                    : '-'}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(movimentacoes)}">
+                <td colspan="6">
+                    Nenhuma movimentação de estoque registrada.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-actions">
+        <a th:href="@{/estoque}" class="btn-secondary">
+            Voltar ao estoque
+        </a>
+    </div>
+
+</section>
+</body>
+</html>

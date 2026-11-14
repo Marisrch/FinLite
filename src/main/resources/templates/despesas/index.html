@@ -19,6 +19,12 @@
         </a>
     </div>
 
+    <div th:if="${sucesso}" class="alert-success"
+         th:text="${sucesso}"></div>
+
+    <div th:if="${erro}" class="alert-error"
+         th:text="${erro}"></div>
+
     <table>
         <thead>
         <tr>
@@ -28,6 +34,7 @@
             <th>Categoria</th>
             <th>Data</th>
             <th>Valor total</th>
+            <th>Ações</th>
         </tr>
         </thead>
 
@@ -39,10 +46,22 @@
             <td th:text="${lancamento.categoriaLancamento}"></td>
             <td th:text="${#temporals.format(lancamento.dataLancamento, 'dd/MM/yyyy')}"></td>
             <td th:text="${#numbers.formatDecimal(lancamento.valorTotalLancamento, 1, 2)}"></td>
+
+            <td>
+                <form th:action="@{/despesas/excluir/{id}(id=${lancamento.idLancamento})}"
+                      method="post"
+                      onsubmit="return confirm('Tem certeza que deseja excluir esta despesa?');">
+
+                    <button type="submit" class="btn-secondary">
+                        Excluir
+                    </button>
+
+                </form>
+            </td>
         </tr>
 
         <tr th:if="${#lists.isEmpty(lancamentos)}">
-            <td colspan="6">Nenhuma despesa cadastrada.</td>
+            <td colspan="7">Nenhuma despesa cadastrada.</td>
         </tr>
         </tbody>
     </table>

@@ -189,4 +189,29 @@ public class DespesaController {
                         .toList()
         );
     }
+
+
+    @PostMapping("/excluir/{id}")
+    public String excluir(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            lancamentoService.excluir(id);
+
+            redirectAttributes.addFlashAttribute(
+                    "sucesso",
+                    "Despesa excluída com sucesso!"
+            );
+
+        } catch (IllegalStateException | IllegalArgumentException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "erro",
+                    e.getMessage()
+            );
+        }
+
+        return "redirect:/despesas";
+    }
 }

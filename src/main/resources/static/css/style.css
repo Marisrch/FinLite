@@ -409,3 +409,46 @@ tbody tr:hover {
         display: none;
     }
 }
+
+/* FORMULÁRIO DE MATERIAIS */
+
+.form-info {
+    margin: 18px 0;
+    padding: 12px 15px;
+    background-color: #fff5f5;
+    border-left: 3px solid #d62828;
+    color: #666666;
+    font-size: 13px;
+    border-radius: 4px;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+
+/* SITUAÇÃO DO ESTOQUE */
+
+.status-baixo {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff0f0;
+    color: #c62828;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-normal {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #eaf7ee;
+    color: #278044;
+    font-size: 12px;
+    font-weight: 600;
+}
