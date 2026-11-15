@@ -19,6 +19,14 @@
         </a>
     </div>
 
+    <div th:if="${sucesso}" class="alert alert-success"
+         th:text="${sucesso}">
+    </div>
+
+    <div th:if="${erro}" class="alert alert-error"
+         th:text="${erro}">
+    </div>
+
     <table>
         <thead>
         <tr>
@@ -30,6 +38,7 @@
             <th>Status</th>
             <th>Entrega</th>
             <th>Registro</th>
+            <th>Ações</th>
         </tr>
         </thead>
 
@@ -43,10 +52,28 @@
             <td th:text="${venda.statusVenda}"></td>
             <td th:text="${#temporals.format(venda.dataEntrega, 'dd/MM/yyyy')}"></td>
             <td th:text="${#temporals.format(venda.dataRegistro, 'dd/MM/yyyy')}"></td>
+
+            <td>
+                <div class="form-actions">
+                    <a th:href="@{/vendas/editar/{id}(id=${venda.idVenda})}"
+                       class="btn-secondary">
+                        Editar
+                    </a>
+
+                    <form th:action="@{/vendas/excluir/{id}(id=${venda.idVenda})}"
+                          method="post"
+                          onsubmit="return confirm('Tem certeza que deseja excluir esta venda?');">
+
+                        <button type="submit" class="btn-secondary">
+                            Excluir
+                        </button>
+                    </form>
+                </div>
+            </td>
         </tr>
 
         <tr th:if="${#lists.isEmpty(vendas)}">
-            <td colspan="8">Nenhuma venda cadastrada.</td>
+            <td colspan="9">Nenhuma venda cadastrada.</td>
         </tr>
         </tbody>
     </table>

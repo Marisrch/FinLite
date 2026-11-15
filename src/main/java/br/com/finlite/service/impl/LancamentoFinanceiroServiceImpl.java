@@ -94,7 +94,7 @@ public class LancamentoFinanceiroServiceImpl
 
         lancamento.setTipoLancamento(tipo);
 
-        // Recupera a movimentação anterior em caso de edição.
+        // Recupera e preserva a movimentação anterior em caso de edição.
         if (lancamento.getIdLancamento() != null) {
 
             LancamentoFinanceiro existente =
@@ -104,11 +104,10 @@ public class LancamentoFinanceiroServiceImpl
                             "Lançamento financeiro não encontrado."
                     ));
 
-            if (lancamento.getMovimentacao() == null) {
-                lancamento.setMovimentacao(
-                        existente.getMovimentacao()
-                );
-            }
+            // Sempre utiliza a movimentação que já está registrada no banco.
+            lancamento.setMovimentacao(
+                    existente.getMovimentacao()
+            );
         }
 
         boolean compraMaterial =
@@ -138,32 +137,42 @@ public class LancamentoFinanceiroServiceImpl
 
         if (compraMaterial) {
 
-            // Reutiliza a movimentação caso seja uma edição.
-            MovimentacaoEstoque movimentacao =
-                    salvo.getMovimentacao();
+            // Recupera a movimentação anterior, se existir.
+            MovimentacaoEstoque anterior = salvo.getMovimentacao();
 
-            if (movimentacao == null) {
-                movimentacao = new MovimentacaoEstoque();
+            // Cria uma nova instância para não alterar os dados
+            // da movimentação antiga antes do cálculo da diferença.
+            MovimentacaoEstoque movimentacao = new MovimentacaoEstoque();
+
+            if (anterior != null) {
+
+                movimentacao.setIdMovimentacao(
+                        anterior.getIdMovimentacao()
+                );
+
+                movimentacao.setDataMovimentacao(
+                        anterior.getDataMovimentacao()
+                );
             }
 
             movimentacao.setMaterial(salvo.getMaterial());
             movimentacao.setTipoMovimentacao("ENTRADA");
+
             movimentacao.setQuantidadeMovimentacao(
                     salvo.getQuantidadeLancamento()
             );
+
+            String motivo =
+                    "Compra: " + salvo.getDescricaoLancamento();
+
             movimentacao.setMotivoOrigem(
-                    ("Compra: " + salvo.getDescricaoLancamento())
-                            .substring(
-                                    0,
-                                    Math.min(
-                                            100,
-                                            ("Compra: " +
-                                                    salvo.getDescricaoLancamento()).length()
-                                    )
-                            )
+                    motivo.substring(0, Math.min(100, motivo.length()))
             );
+
             movimentacao.setLancamento(salvo);
 
+            // O serviço de estoque compara os dados novos
+            // com a movimentação antiga e ajusta o estoque.
             MovimentacaoEstoque movimentacaoSalva =
                     movimentacaoService.salvar(movimentacao);
 

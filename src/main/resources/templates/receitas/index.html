@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Receitas', ~{::conteudo})}">
+
+<body>
+
+<section th:fragment="conteudo">
+
+    <div class="page-header">
+        <div>
+            <h1>Receitas</h1>
+            <p>Consulte e gerencie as receitas adicionais do seu negócio.</p>
+        </div>
+
+        <a th:href="@{/receitas/novo}" class="btn-primary">
+            + Nova receita
+        </a>
+    </div>
+
+    <div th:if="${sucesso}" class="alert-success"
+         th:text="${sucesso}">
+    </div>
+
+    <div th:if="${erro}" class="alert-error"
+         th:text="${erro}">
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Data</th>
+            <th>Valor total</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="lancamento : ${lancamentos}">
+            <td th:text="${lancamento.idLancamento}"></td>
+            <td th:text="${lancamento.tipoLancamento}"></td>
+            <td th:text="${lancamento.descricaoLancamento}"></td>
+            <td th:text="${lancamento.categoriaLancamento}"></td>
+
+            <td th:text="${#temporals.format(
+                lancamento.dataLancamento, 'dd/MM/yyyy')}">
+            </td>
+
+            <td th:text="${#numbers.formatDecimal(
+                lancamento.valorTotalLancamento, 1, 2)}">
+            </td>
+
+            <td>
+                <div class="form-actions">
+
+                    <a th:href="@{/receitas/editar/{id}(
+                        id=${lancamento.idLancamento})}"
+                       class="btn-secondary">
+                        Editar
+                    </a>
+
+                    <form th:action="@{/receitas/excluir/{id}(
+                        id=${lancamento.idLancamento})}"
+                          method="post"
+                          onsubmit="return confirm(
+                              'Tem certeza que deseja excluir esta receita?');">
+
+                        <button type="submit" class="btn-secondary">
+                            Excluir
+                        </button>
+
+                    </form>
+
+                </div>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(lancamentos)}">
+            <td colspan="7">Nenhuma receita cadastrada.</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</section>
+
+</body>
+</html>

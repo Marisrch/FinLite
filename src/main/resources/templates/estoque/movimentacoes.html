@@ -31,11 +31,13 @@
                 <th>Tipo</th>
                 <th>Quantidade</th>
                 <th>Motivo</th>
+                <th>Ações</th>
             </tr>
             </thead>
 
             <tbody>
             <tr th:each="movimentacao : ${movimentacoes}">
+
                 <td th:text="${movimentacao.idMovimentacao}"></td>
 
                 <td th:text="${#temporals.format(
@@ -64,13 +66,33 @@
                 <td th:text="${movimentacao.motivoOrigem != null
                     ? movimentacao.motivoOrigem
                     : '-'}"></td>
+
+                <td>
+                    <!-- Permite excluir somente movimentações manuais -->
+                    <form th:if="${movimentacao.lancamento == null}"
+                          th:action="@{/estoque/movimentacoes/excluir/{id}(id=${movimentacao.idMovimentacao})}"
+                          method="post"
+                          onsubmit="return confirm('Deseja excluir esta movimentação? O estoque será atualizado.');">
+
+                        <button type="submit" class="btn-secondary">
+                            Excluir
+                        </button>
+                    </form>
+
+                    <!-- Entradas vinculadas a despesas não podem ser excluídas aqui -->
+                    <span th:if="${movimentacao.lancamento != null}">
+                        -
+                    </span>
+                </td>
+
             </tr>
 
             <tr th:if="${#lists.isEmpty(movimentacoes)}">
-                <td colspan="6">
+                <td colspan="7">
                     Nenhuma movimentação de estoque registrada.
                 </td>
             </tr>
+
             </tbody>
         </table>
     </div>

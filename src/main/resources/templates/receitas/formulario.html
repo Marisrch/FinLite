@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Receitas', ~{::conteudo})}">
+
+<body>
+<section th:fragment="conteudo">
+
+    <div class="page-header">
+        <div>
+            <h1 th:text="${lancamento.idLancamento == null
+                ? 'Nova receita'
+                : 'Editar receita'}">
+                Nova receita
+            </h1>
+
+            <p th:text="${lancamento.idLancamento == null
+                ? 'Registre uma receita adicional do seu negócio.'
+                : 'Atualize as informações desta receita.'}">
+                Registre uma receita adicional do seu negócio.
+            </p>
+        </div>
+    </div>
+
+    <div th:if="${erro}" class="alert alert-error"
+         th:text="${erro}">
+    </div>
+
+    <div th:if="${sucesso}" class="alert alert-success"
+         th:text="${sucesso}">
+    </div>
+
+    <form th:if="${idEmpreendedor != null}"
+          th:action="@{/receitas/salvar}"
+          th:object="${lancamento}"
+          method="post">
+
+        <input type="hidden"
+               th:field="*{idLancamento}">
+
+        <input type="hidden"
+               name="idEmpreendedor"
+               th:value="${idEmpreendedor}">
+
+        <input type="hidden"
+               name="tipoLancamento"
+               value="RECEITA">
+
+        <div class="form-group">
+            <label for="dataLancamento">Data da receita</label>
+
+            <input type="date"
+                   id="dataLancamento"
+                   name="dataLancamento"
+                   th:value="${lancamento.dataLancamento != null
+                       ? #temporals.format(lancamento.dataLancamento, 'yyyy-MM-dd')
+                       : ''}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="descricaoLancamento">Descrição</label>
+
+            <input type="text"
+                   id="descricaoLancamento"
+                   th:field="*{descricaoLancamento}"
+                   maxlength="255"
+                   placeholder="Ex.: Serviço de artesanato"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="categoriaLancamento">Categoria</label>
+
+            <select id="categoriaLancamento"
+                    th:field="*{categoriaLancamento}"
+                    required>
+
+                <option value="">Selecione</option>
+                <option value="SERVIÇOS">Serviços</option>
+                <option value="VENDAS">Vendas diversas</option>
+                <option value="ENCOMENDAS">Encomendas</option>
+                <option value="OUTROS">Outros</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="valorTotalLancamento">
+                Valor total da receita (R$)
+            </label>
+
+            <input type="number"
+                   id="valorTotalLancamento"
+                   th:field="*{valorTotalLancamento}"
+                   min="0.01"
+                   step="0.01"
+                   placeholder="Ex.: 150.00"
+                   required>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/receitas}" class="btn-secondary">
+                Cancelar
+            </a>
+
+            <button type="submit"
+                    class="btn-primary"
+                    th:text="${lancamento.idLancamento == null
+                        ? 'Salvar receita'
+                        : 'Atualizar receita'}">
+                Salvar receita
+            </button>
+        </div>
+
+    </form>
+
+    <div th:if="${idEmpreendedor == null}">
+        <p>Cadastre um empreendedor antes de registrar receitas.</p>
+
+        <a th:href="@{/empreendedores/novo}"
+           class="btn-primary">
+            Cadastrar empreendedor
+        </a>
+    </div>
+
+</section>
+</body>
+</html>

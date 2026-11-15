@@ -9,6 +9,7 @@ import br.com.finlite.service.EmpreendedorService;
 import br.com.finlite.service.LancamentoFinanceiroService;
 import br.com.finlite.service.MaterialService;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,6 @@ public class DespesaController {
             LancamentoFinanceiroService lancamentoService,
             EmpreendedorService empreendedorService,
             MaterialService materialService) {
-
         this.lancamentoService = lancamentoService;
         this.empreendedorService = empreendedorService;
         this.materialService = materialService;
@@ -35,7 +35,6 @@ public class DespesaController {
     // Lista somente os lançamentos do tipo DESPESA
     @GetMapping
     public String listar(Model model) {
-
         model.addAttribute(
                 "lancamentos",
                 lancamentoService.listarTodos()
@@ -65,14 +64,11 @@ public class DespesaController {
         );
 
         if (empreendedor == null) {
-
             model.addAttribute(
                     "erro",
                     "Cadastre um empreendedor antes de registrar despesas."
             );
-
             model.addAttribute("materiais", java.util.List.of());
-
             return "despesas/formulario";
         }
 
@@ -84,7 +80,40 @@ public class DespesaController {
         return "despesas/formulario";
     }
 
-    // Salva uma despesa
+    // Abre o formulário de edição de uma despesa
+    @GetMapping("/editar/{id}")
+    public String editar(
+            @PathVariable Integer id,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        LancamentoFinanceiro lancamento = lancamentoService
+                .buscarPorId(id)
+                .orElse(null);
+
+        if (lancamento == null ||
+                !"DESPESA".equalsIgnoreCase(
+                        lancamento.getTipoLancamento())) {
+
+            redirectAttributes.addFlashAttribute(
+                    "erro",
+                    "Despesa não encontrada."
+            );
+
+            return "redirect:/despesas";
+        }
+
+        model.addAttribute("lancamento", lancamento);
+
+        prepararFormulario(
+                model,
+                lancamento.getEmpreendedor().getIdEmpreendedor()
+        );
+
+        return "despesas/formulario";
+    }
+
+    // Salva uma despesa nova ou atualiza uma existente
     @PostMapping("/salvar")
     public String salvar(
             @ModelAttribute("lancamento") LancamentoFinanceiro lancamento,
@@ -98,18 +127,17 @@ public class DespesaController {
                 .orElse(null);
 
         if (empreendedor == null) {
-
             model.addAttribute(
                     "erro",
                     "Empreendedor não encontrado."
             );
 
             prepararFormulario(model, idEmpreendedor);
-
             return "despesas/formulario";
         }
 
         lancamento.setEmpreendedor(empreendedor);
+        lancamento.setTipoLancamento("DESPESA");
 
         // Material é opcional
         if (idMaterial != null) {
@@ -129,28 +157,26 @@ public class DespesaController {
                         "O material selecionado não é válido."
                 );
 
-                prepararFormulario(
-                        model,
-                        idEmpreendedor
-                );
-
+                prepararFormulario(model, idEmpreendedor);
                 return "despesas/formulario";
             }
 
             lancamento.setMaterial(material);
 
         } else {
-
             lancamento.setMaterial(null);
         }
 
-        try {
+        boolean edicao = lancamento.getIdLancamento() != null;
 
+        try {
             lancamentoService.salvar(lancamento);
 
             redirectAttributes.addFlashAttribute(
                     "sucesso",
-                    "Despesa registrada com sucesso!"
+                    edicao
+                            ? "Despesa atualizada com sucesso!"
+                            : "Despesa registrada com sucesso!"
             );
 
             return "redirect:/despesas";
@@ -158,13 +184,18 @@ public class DespesaController {
         } catch (IllegalArgumentException e) {
 
             model.addAttribute("erro", e.getMessage());
-
-            prepararFormulario(
-                    model,
-                    idEmpreendedor
-            );
+            prepararFormulario(model, idEmpreendedor);
 
             return "despesas/formulario";
+
+        } catch (EntityNotFoundException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "erro",
+                    "O lançamento ou algum dado relacionado não foi encontrado."
+            );
+
+            return "redirect:/despesas";
         }
     }
 
@@ -173,10 +204,7 @@ public class DespesaController {
             Model model,
             Integer idEmpreendedor) {
 
-        model.addAttribute(
-                "idEmpreendedor",
-                idEmpreendedor
-        );
+        model.addAttribute("idEmpreendedor", idEmpreendedor);
 
         model.addAttribute(
                 "materiais",
@@ -190,7 +218,7 @@ public class DespesaController {
         );
     }
 
-
+    // Exclui uma despesa e reverte eventual movimentação de estoque
     @PostMapping("/excluir/{id}")
     public String excluir(
             @PathVariable Integer id,
@@ -204,7 +232,9 @@ public class DespesaController {
                     "Despesa excluída com sucesso!"
             );
 
-        } catch (IllegalStateException | IllegalArgumentException e) {
+        } catch (IllegalStateException |
+                 IllegalArgumentException |
+                 EntityNotFoundException e) {
 
             redirectAttributes.addFlashAttribute(
                     "erro",

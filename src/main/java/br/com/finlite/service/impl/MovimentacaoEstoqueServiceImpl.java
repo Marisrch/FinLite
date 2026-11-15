@@ -69,7 +69,7 @@ public class MovimentacaoEstoqueServiceImpl
                 "Material não encontrado."
         ));
 
-        // Se estiver editando, desfaz o efeito anterior.
+        // Edição de movimentação existente
         if (movimentacao.getIdMovimentacao() != null) {
 
             MovimentacaoEstoque anterior =
@@ -81,42 +81,62 @@ public class MovimentacaoEstoqueServiceImpl
 
             Material materialAnterior = anterior.getMaterial();
 
-            atualizarEstoque(
-                    materialAnterior,
-                    anterior.getTipoMovimentacao(),
-                    anterior.getQuantidadeMovimentacao(),
-                    true
-            );
+            boolean mesmoMaterial =
+                    materialAnterior.getIdMaterial()
+                            .equals(material.getIdMaterial());
 
-            materialRepository.save(materialAnterior);
-        }
+            boolean mesmoTipo =
+                    anterior.getTipoMovimentacao()
+                            .equalsIgnoreCase(tipo);
 
-        BigDecimal estoqueAtual =
-                material.getQuantidadeEstoqueMaterial();
+            // Mesmo material e mesmo tipo:
+            // aplica somente a diferença entre as quantidades.
+            if (mesmoMaterial && mesmoTipo) {
 
-        if (estoqueAtual == null) {
-            estoqueAtual = BigDecimal.ZERO;
-        }
+                BigDecimal quantidadeAnterior =
+                        anterior.getQuantidadeMovimentacao();
 
-        BigDecimal novoEstoque;
+                BigDecimal diferenca =
+                        movimentacao.getQuantidadeMovimentacao()
+                                .subtract(quantidadeAnterior);
 
-        if (tipo.equals("ENTRADA")) {
-            novoEstoque = estoqueAtual.add(
-                    movimentacao.getQuantidadeMovimentacao()
-            );
+                ajustarEstoquePorDiferenca(
+                        material,
+                        tipo,
+                        diferenca
+                );
+
+            } else {
+
+                // Se mudou o material ou o tipo,
+                // primeiro desfaz a movimentação anterior.
+                atualizarEstoque(
+                        materialAnterior,
+                        anterior.getTipoMovimentacao(),
+                        anterior.getQuantidadeMovimentacao(),
+                        true
+                );
+
+                materialRepository.save(materialAnterior);
+
+                // Depois aplica a nova movimentação.
+                aplicarMovimentacao(
+                        material,
+                        tipo,
+                        movimentacao.getQuantidadeMovimentacao()
+                );
+            }
+
         } else {
-            novoEstoque = estoqueAtual.subtract(
+
+            // Nova movimentação
+            aplicarMovimentacao(
+                    material,
+                    tipo,
                     movimentacao.getQuantidadeMovimentacao()
             );
         }
 
-        if (novoEstoque.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException(
-                    "Estoque insuficiente para realizar esta saída."
-            );
-        }
-
-        material.setQuantidadeEstoqueMaterial(novoEstoque);
         materialRepository.save(material);
 
         movimentacao.setMaterial(material);
@@ -127,6 +147,62 @@ public class MovimentacaoEstoqueServiceImpl
         }
 
         return movimentacaoRepository.save(movimentacao);
+    }
+
+    private void ajustarEstoquePorDiferenca(
+            Material material,
+            String tipo,
+            BigDecimal diferenca) {
+
+        BigDecimal estoque = material.getQuantidadeEstoqueMaterial();
+
+        if (estoque == null) {
+            estoque = BigDecimal.ZERO;
+        }
+
+        BigDecimal novoEstoque;
+
+        if (tipo.equalsIgnoreCase("ENTRADA")) {
+            novoEstoque = estoque.add(diferenca);
+        } else {
+            novoEstoque = estoque.subtract(diferenca);
+        }
+
+        if (novoEstoque.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(
+                    "Estoque insuficiente para realizar essa alteração."
+            );
+        }
+
+        material.setQuantidadeEstoqueMaterial(novoEstoque);
+    }
+
+    private void aplicarMovimentacao(
+            Material material,
+            String tipo,
+            BigDecimal quantidade) {
+
+        BigDecimal estoque = material.getQuantidadeEstoqueMaterial();
+
+        if (estoque == null) {
+            estoque = BigDecimal.ZERO;
+        }
+
+        BigDecimal novoEstoque;
+
+        if (tipo.equalsIgnoreCase("ENTRADA")) {
+            novoEstoque = estoque.add(quantidade);
+        } else {
+            novoEstoque = estoque.subtract(quantidade);
+        }
+
+        if (novoEstoque.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(
+                    "Estoque insuficiente para realizar esta saída."
+            );
+        }
+
+        material.setQuantidadeEstoqueMaterial(novoEstoque);
     }
 
     private void atualizarEstoque(
@@ -187,6 +263,8 @@ public class MovimentacaoEstoqueServiceImpl
                 movimentacao.getQuantidadeMovimentacao(),
                 true
         );
+
+        materialRepository.save(movimentacao.getMaterial());
 
         movimentacaoRepository.delete(movimentacao);
     }

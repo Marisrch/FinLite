@@ -5,7 +5,7 @@ import br.com.finlite.model.Empreendedor;
 import br.com.finlite.model.Venda;
 import br.com.finlite.service.EmpreendedorService;
 import br.com.finlite.service.VendaService;
-
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,24 +24,16 @@ public class VendaController {
     public VendaController(
             VendaService vendaService,
             EmpreendedorService empreendedorService) {
-
         this.vendaService = vendaService;
         this.empreendedorService = empreendedorService;
     }
 
-    // Lista todas as vendas
     @GetMapping
     public String listar(Model model) {
-
-        model.addAttribute(
-                "vendas",
-                vendaService.listarTodos()
-        );
-
+        model.addAttribute("vendas", vendaService.listarTodos());
         return "vendas/index";
     }
 
-    // Abre o formulário de nova venda
     @GetMapping("/novo")
     public String novaVenda(Model model) {
 
@@ -49,53 +41,109 @@ public class VendaController {
                 empreendedorService.listarTodos();
 
         model.addAttribute("venda", new Venda());
+        model.addAttribute("modoEdicao", false);
 
         if (empreendedores.isEmpty()) {
-
-            model.addAttribute(
-                    "erro",
-                    "Nenhum empreendedor cadastrado. Cadastre um empreendedor antes de registrar vendas."
-            );
-
+            model.addAttribute("erro",
+                    "Nenhum empreendedor cadastrado. "
+                            + "Cadastre um empreendedor antes de registrar vendas.");
         } else {
-
-            model.addAttribute(
-                    "idEmpreendedor",
-                    empreendedores.get(0).getIdEmpreendedor()
-            );
+            model.addAttribute("idEmpreendedor",
+                    empreendedores.get(0).getIdEmpreendedor());
         }
 
         return "vendas/formulario";
     }
 
-    // Salva uma venda
+    @GetMapping("/editar/{id}")
+    public String editar(
+            @PathVariable Integer id,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        Optional<Venda> vendaOptional = vendaService.buscarPorId(id);
+
+        if (vendaOptional.isEmpty()) {
+            redirectAttributes.addFlashAttribute(
+                    "erro", "Venda não encontrada.");
+            return "redirect:/vendas";
+        }
+
+        Venda venda = vendaOptional.get();
+
+        model.addAttribute("venda", venda);
+        model.addAttribute("idEmpreendedor",
+                venda.getEmpreendedor().getIdEmpreendedor());
+        model.addAttribute("modoEdicao", true);
+
+        return "vendas/formulario";
+    }
+
     @PostMapping("/salvar")
     public String salvar(
             @ModelAttribute("venda") Venda venda,
             @RequestParam Integer idEmpreendedor,
             RedirectAttributes redirectAttributes) {
 
-        Optional<Empreendedor> empreendedor =
-                empreendedorService.buscarPorId(idEmpreendedor);
+        // Identifica a operação antes de salvar.
+        boolean edicao = venda.getIdVenda() != null;
 
-        if (empreendedor.isEmpty()) {
+        try {
+            Optional<Empreendedor> empreendedor =
+                    empreendedorService.buscarPorId(idEmpreendedor);
+
+            if (empreendedor.isEmpty()) {
+                throw new IllegalArgumentException(
+                        "Empreendedor não encontrado.");
+            }
+
+            // Verifica se a venda existe quando for uma edição.
+            if (edicao
+                    && vendaService.buscarPorId(venda.getIdVenda()).isEmpty()) {
+                throw new IllegalArgumentException(
+                        "A venda que você tentou editar não foi encontrada.");
+            }
+
+            venda.setEmpreendedor(empreendedor.get());
+
+            vendaService.salvar(venda);
 
             redirectAttributes.addFlashAttribute(
-                    "erro",
-                    "Empreendedor não encontrado. Verifique o cadastro."
-            );
+                    "sucesso",
+                    edicao
+                            ? "Venda atualizada com sucesso!"
+                            : "Venda cadastrada com sucesso!");
+
+            return "redirect:/vendas";
+
+        } catch (IllegalArgumentException e) {
+
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+
+            if (edicao) {
+                return "redirect:/vendas/editar/" + venda.getIdVenda();
+            }
 
             return "redirect:/vendas/novo";
         }
+    }
 
-        venda.setEmpreendedor(empreendedor.get());
+    @PostMapping("/excluir/{id}")
+    public String excluir(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes) {
 
-        vendaService.salvar(venda);
+        try {
+            vendaService.excluir(id);
 
-        redirectAttributes.addFlashAttribute(
-                "sucesso",
-                "Venda cadastrada com sucesso!"
-        );
+            redirectAttributes.addFlashAttribute(
+                    "sucesso", "Venda excluída com sucesso!");
+
+        } catch (EntityNotFoundException e) {
+
+            redirectAttributes.addFlashAttribute(
+                    "erro", e.getMessage());
+        }
 
         return "redirect:/vendas";
     }

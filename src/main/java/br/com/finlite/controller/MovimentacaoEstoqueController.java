@@ -89,4 +89,42 @@ public class MovimentacaoEstoqueController {
             return "redirect:/estoque/movimentacoes/novo";
         }
     }
+
+
+    @PostMapping("/excluir/{id}")
+    public String excluir(
+            @PathVariable Integer id,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            MovimentacaoEstoque movimentacao =
+                    movimentacaoService.buscarPorId(id)
+                            .orElseThrow(() ->
+                                    new IllegalArgumentException(
+                                            "Movimentação não encontrada."
+                                    )
+                            );
+
+            if (movimentacao.getLancamento() != null) {
+                throw new IllegalArgumentException(
+                        "Esta movimentação está vinculada a uma despesa. "
+                                + "Exclua a despesa para reverter o estoque."
+                );
+            }
+
+            movimentacaoService.excluir(id);
+
+            redirectAttributes.addFlashAttribute(
+                    "sucesso",
+                    "Movimentação excluída e estoque atualizado com sucesso!"
+            );
+
+        } catch (IllegalArgumentException | IllegalStateException e) {
+
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+        }
+
+        return "redirect:/estoque/movimentacoes";
+    }
+
 }

@@ -20,10 +20,12 @@
     </div>
 
     <div th:if="${sucesso}" class="alert-success"
-         th:text="${sucesso}"></div>
+         th:text="${sucesso}">
+    </div>
 
     <div th:if="${erro}" class="alert-error"
-         th:text="${erro}"></div>
+         th:text="${erro}">
+    </div>
 
     <table>
         <thead>
@@ -39,30 +41,50 @@
         </thead>
 
         <tbody>
+
         <tr th:each="lancamento : ${lancamentos}">
             <td th:text="${lancamento.idLancamento}"></td>
             <td th:text="${lancamento.tipoLancamento}"></td>
             <td th:text="${lancamento.descricaoLancamento}"></td>
             <td th:text="${lancamento.categoriaLancamento}"></td>
-            <td th:text="${#temporals.format(lancamento.dataLancamento, 'dd/MM/yyyy')}"></td>
-            <td th:text="${#numbers.formatDecimal(lancamento.valorTotalLancamento, 1, 2)}"></td>
+
+            <td th:text="${#temporals.format(
+                lancamento.dataLancamento, 'dd/MM/yyyy')}">
+            </td>
+
+            <td th:text="${#numbers.formatDecimal(
+                lancamento.valorTotalLancamento, 1, 2)}">
+            </td>
 
             <td>
-                <form th:action="@{/despesas/excluir/{id}(id=${lancamento.idLancamento})}"
-                      method="post"
-                      onsubmit="return confirm('Tem certeza que deseja excluir esta despesa?');">
+                <div class="form-actions">
 
-                    <button type="submit" class="btn-secondary">
-                        Excluir
-                    </button>
+                    <a th:href="@{/despesas/editar/{id}(
+                        id=${lancamento.idLancamento})}"
+                       class="btn-secondary">
+                        Editar
+                    </a>
 
-                </form>
+                    <form th:action="@{/despesas/excluir/{id}(
+                        id=${lancamento.idLancamento})}"
+                          method="post"
+                          onsubmit="return confirm(
+                              'Tem certeza que deseja excluir esta despesa?');">
+
+                        <button type="submit" class="btn-secondary">
+                            Excluir
+                        </button>
+
+                    </form>
+
+                </div>
             </td>
         </tr>
 
         <tr th:if="${#lists.isEmpty(lancamentos)}">
             <td colspan="7">Nenhuma despesa cadastrada.</td>
         </tr>
+
         </tbody>
     </table>
 
