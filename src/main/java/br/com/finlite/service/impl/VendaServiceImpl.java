@@ -89,6 +89,26 @@ public class VendaServiceImpl implements VendaService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<Venda> pesquisar(String cliente, String status) {
+
+        // Transforma campos vazios em null.
+        if (cliente != null && cliente.isBlank()) {
+            cliente = null;
+        }
+
+        if (cliente != null) {
+            cliente = cliente.trim();
+        }
+
+        if (status != null && status.isBlank()) {
+            status = null;
+        }
+
+        return vendaRepository.pesquisar(cliente, status);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Optional<Venda> buscarPorId(Integer id) {
         return vendaRepository.findById(id);
     }

@@ -27,15 +27,25 @@ public class EmpreendedorController {
     @PostMapping("/salvar")
     public String salvar(
             @ModelAttribute Empreendedor empreendedor,
+            Model model,
             RedirectAttributes redirectAttributes) {
 
-        empreendedorService.salvar(empreendedor);
+        try {
+            empreendedorService.salvar(empreendedor);
 
-        redirectAttributes.addFlashAttribute(
-                "sucesso",
-                "Empreendedor cadastrado com sucesso!"
-        );
+            redirectAttributes.addFlashAttribute(
+                    "sucesso",
+                    "Empreendedor cadastrado com sucesso!"
+            );
 
-        return "redirect:/empreendedores/novo";
+            return "redirect:/empreendedores/novo";
+
+        } catch (IllegalArgumentException e) {
+
+            model.addAttribute("empreendedor", empreendedor);
+            model.addAttribute("erro", e.getMessage());
+
+            return "empreendedor/formulario";
+        }
     }
 }

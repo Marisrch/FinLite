@@ -29,8 +29,16 @@ public class VendaController {
     }
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("vendas", vendaService.listarTodos());
+    public String listar(
+            @RequestParam(required = false, defaultValue = "") String cliente,
+            @RequestParam(required = false, defaultValue = "") String status,
+            Model model) {
+
+        model.addAttribute("vendas", vendaService.pesquisar(cliente, status));
+
+        model.addAttribute("clienteFiltro", cliente);
+        model.addAttribute("statusFiltro", status);
+
         return "vendas/index";
     }
 

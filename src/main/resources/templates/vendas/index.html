@@ -27,18 +27,18 @@
          th:text="${erro}">
     </div>
 
-    <table>
+    <table id="tabelaVendas" data-tabela-filtros>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Produto / Peça</th>
-            <th>Valor</th>
-            <th>Pagamento</th>
-            <th>Status</th>
-            <th>Entrega</th>
-            <th>Registro</th>
-            <th>Ações</th>
+            <th>ID <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Cliente <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Produto/Peça <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Valor <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Pagamento <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Status <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Entrega <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Registro <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th data-coluna-acoes>Ações</th>
         </tr>
         </thead>
 
@@ -72,7 +72,7 @@
             </td>
         </tr>
 
-        <tr th:if="${#lists.isEmpty(vendas)}">
+        <tr th:if="${#lists.isEmpty(vendas)}" class="linha-sem-registros">
             <td colspan="9">Nenhuma venda cadastrada.</td>
         </tr>
         </tbody>

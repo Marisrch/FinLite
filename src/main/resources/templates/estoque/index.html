@@ -14,9 +14,17 @@
             <p>Acompanhe as quantidades disponíveis e identifique materiais que precisam de reposição.</p>
         </div>
 
-        <a th:href="@{/materiais/novo}" class="btn-primary">
-            + Novo material
-        </a>
+        <div class="page-actions">
+
+            <a th:href="@{/estoque/movimentacoes}" class="btn-secondary">
+                Histórico de movimentações
+            </a>
+
+            <a th:href="@{/materiais/novo}" class="btn-primary">
+                + Novo material
+            </a>
+
+        </div>
     </div>
 
     <div th:if="${sucesso}" class="alert-success"
@@ -25,17 +33,17 @@
     <div th:if="${erro}" class="alert-error"
          th:text="${erro}"></div>
 
-    <table>
+    <table id="tabelaEstoque" data-tabela-filtros>
         <thead>
         <tr>
-            <th>Material</th>
-            <th>Categoria</th>
-            <th>Quantidade atual</th>
-            <th>Quantidade mínima</th>
-            <th>Unidade</th>
-            <th>Custo unitário</th>
-            <th>Valor em estoque</th>
-            <th>Situação</th>
+            <th>Material <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Categoria <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Qtd. atual <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Qtd. mínima <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Unidade <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Custo unit. <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Valor estoque <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Situação <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
         </tr>
         </thead>
 
@@ -75,7 +83,7 @@
 
         </tr>
 
-        <tr th:if="${#lists.isEmpty(materiais)}">
+        <tr th:if="${#lists.isEmpty(materiais)}" class="linha-sem-registros">
             <td colspan="8">Nenhum material cadastrado.</td>
         </tr>
 
@@ -87,6 +95,3 @@
 </body>
 </html>
 
-<a th:href="@{/estoque/movimentacoes}" class="btn-secondary">
-    Histórico de movimentações
-</a>

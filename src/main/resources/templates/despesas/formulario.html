@@ -54,8 +54,8 @@
                    id="dataLancamento"
                    name="dataLancamento"
                    th:value="${lancamento.dataLancamento != null
-           ? #temporals.format(lancamento.dataLancamento, 'yyyy-MM-dd')
-           : ''}"
+                   ? #temporals.format(lancamento.dataLancamento, 'yyyy-MM-dd')
+                   : ''}"
                    required>
         </div>
 
@@ -152,10 +152,14 @@
             <input type="number"
                    id="valorTotalLancamento"
                    th:field="*{valorTotalLancamento}"
-                   min="0.01"
+                   min="0"
                    step="0.01"
-                   placeholder="Ex.: 50.00"
+                   placeholder="Calculado automaticamente"
                    required>
+
+            <small id="mensagemValorTotal">
+                Para compras de materiais, o valor será calculado automaticamente.
+            </small>
         </div>
 
         <div class="form-actions">

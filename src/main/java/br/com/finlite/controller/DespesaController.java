@@ -32,17 +32,11 @@ public class DespesaController {
         this.materialService = materialService;
     }
 
-    // Lista somente os lançamentos do tipo DESPESA
     @GetMapping
     public String listar(Model model) {
         model.addAttribute(
                 "lancamentos",
-                lancamentoService.listarTodos()
-                        .stream()
-                        .filter(l -> "DESPESA".equalsIgnoreCase(
-                                l.getTipoLancamento()
-                        ))
-                        .toList()
+                lancamentoService.listarPorTipoOrdenadoPorData("DESPESA")
         );
 
         return "despesas/index";

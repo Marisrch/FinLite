@@ -10,6 +10,10 @@ public interface LancamentoFinanceiroService {
 
     List<LancamentoFinanceiro> listarTodos();
 
+    List<LancamentoFinanceiro> listarPorTipoOrdenadoPorData(
+            String tipoLancamento
+    );
+
     Optional<LancamentoFinanceiro> buscarPorId(Integer id);
 
     void excluir(Integer id);

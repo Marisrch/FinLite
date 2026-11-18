@@ -37,9 +37,19 @@
         <label>Categoria</label>
         <input type="text"
                th:field="*{categoriaMaterial}"
+               list="categorias-material"
                maxlength="50"
-               placeholder="Ex.: Fios e tecidos"
+               placeholder="Digite ou selecione uma categoria"
                required>
+
+        <datalist id="categorias-material">
+            <option value="Fios e tecidos">
+            <option value="Aviamentos">
+            <option value="Ferramentas">
+            <option value="Embalagens">
+            <option value="Acessórios">
+            <option value="Outros">
+        </datalist>
 
         <label>Marca</label>
         <input type="text"
@@ -74,6 +84,11 @@
                placeholder="Ex.: 5"
                required>
 
+        <div class="field-hint">
+            <span class="hint-icon">ⓘ</span>
+            <span>Limite para identificar quando o estoque está baixo.</span>
+        </div>
+
         <label>Custo unitário estimado (R$)</label>
         <input type="number"
                th:field="*{custoUnitarioMaterial}"
@@ -91,7 +106,7 @@
                 Salvar material
             </button>
 
-            <a th:href="@{/materiais}" class="btn-secondary">
+            <a th:href="@{/estoque}" class="btn-secondary">
                 Cancelar
             </a>
         </div>

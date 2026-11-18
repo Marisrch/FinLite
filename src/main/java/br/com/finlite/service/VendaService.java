@@ -1,3 +1,4 @@
+
 package br.com.finlite.service;
 
 import br.com.finlite.model.Venda;
@@ -9,6 +10,8 @@ public interface VendaService {
     Venda salvar(Venda venda);
 
     List<Venda> listarTodos();
+
+    List<Venda> pesquisar(String cliente, String status);
 
     Optional<Venda> buscarPorId(Integer id);
 

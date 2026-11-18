@@ -13,29 +13,43 @@
             <p>Acompanhe as entradas e saídas dos materiais.</p>
         </div>
 
-        <a th:href="@{/estoque/movimentacoes/novo}" class="btn-primary">
-            Registrar saída
-        </a>
+        <div class="page-actions">
+
+            <a th:href="@{/estoque}" class="btn-secondary">
+                Voltar ao estoque
+            </a>
+
+            <a th:href="@{/estoque/movimentacoes/novo}" class="btn-primary">
+                Registrar saída
+            </a>
+
+        </div>
     </div>
 
-    <div th:if="${sucesso}" class="alert-success" th:text="${sucesso}"></div>
-    <div th:if="${erro}" class="alert-error" th:text="${erro}"></div>
+    <div th:if="${sucesso}" class="alert-success"
+         th:text="${sucesso}"></div>
+
+    <div th:if="${erro}" class="alert-error"
+         th:text="${erro}"></div>
 
     <div class="table-container">
-        <table>
+
+        <table id="tabelaMovimentacoes" data-tabela-filtros>
+
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Data</th>
-                <th>Material</th>
-                <th>Tipo</th>
-                <th>Quantidade</th>
-                <th>Motivo</th>
-                <th>Ações</th>
+                <th>ID <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+                <th>Data <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+                <th>Material <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+                <th>Tipo <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+                <th>Qtd. <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+                <th>Motivo <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+                <th data-coluna-acoes>Ações</th>
             </tr>
             </thead>
 
             <tbody>
+
             <tr th:each="movimentacao : ${movimentacoes}">
 
                 <td th:text="${movimentacao.idMovimentacao}"></td>
@@ -87,7 +101,9 @@
 
             </tr>
 
-            <tr th:if="${#lists.isEmpty(movimentacoes)}">
+            <tr th:if="${#lists.isEmpty(movimentacoes)}"
+                class="linha-sem-registros">
+
                 <td colspan="7">
                     Nenhuma movimentação de estoque registrada.
                 </td>
@@ -95,12 +111,7 @@
 
             </tbody>
         </table>
-    </div>
 
-    <div class="form-actions">
-        <a th:href="@{/estoque}" class="btn-secondary">
-            Voltar ao estoque
-        </a>
     </div>
 
 </section>

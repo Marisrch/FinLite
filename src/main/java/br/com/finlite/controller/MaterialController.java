@@ -26,13 +26,7 @@ public class MaterialController {
         this.materialService = materialService;
         this.empreendedorService = empreendedorService;
     }
-
-    @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("materiais", materialService.listarTodos());
-        return "materiais/index";
-    }
-
+    
     @GetMapping("/novo")
     public String novoMaterial(Model model) {
 
@@ -85,7 +79,7 @@ public class MaterialController {
                     "Material cadastrado com sucesso!"
             );
 
-            return "redirect:/materiais";
+            return "redirect:/estoque";
 
         } catch (IllegalArgumentException e) {
 

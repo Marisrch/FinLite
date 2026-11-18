@@ -26,16 +26,16 @@
          th:text="${erro}">
     </div>
 
-    <table>
+    <table id="tabelaReceitas" data-tabela-filtros>
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Tipo</th>
-            <th>Descrição</th>
-            <th>Categoria</th>
-            <th>Data</th>
-            <th>Valor total</th>
-            <th>Ações</th>
+            <th>ID <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Tipo <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Descrição <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Categoria <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Data <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th>Valor <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th data-coluna-acoes>Ações</th>
         </tr>
         </thead>
 
@@ -80,7 +80,7 @@
             </td>
         </tr>
 
-        <tr th:if="${#lists.isEmpty(lancamentos)}">
+        <tr th:if="${#lists.isEmpty(lancamentos)}" class="linha-sem-registros">
             <td colspan="7">Nenhuma receita cadastrada.</td>
         </tr>
 

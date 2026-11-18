@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.math.RoundingMode;
 
 @Service
 public class LancamentoFinanceiroServiceImpl
@@ -56,14 +57,6 @@ public class LancamentoFinanceiroServiceImpl
                 lancamento.getCategoriaLancamento().isBlank()) {
             throw new IllegalArgumentException(
                     "A categoria do lançamento é obrigatória."
-            );
-        }
-
-        if (lancamento.getValorTotalLancamento() == null ||
-                lancamento.getValorTotalLancamento()
-                        .compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException(
-                    "O valor total deve ser maior que zero."
             );
         }
 
@@ -121,13 +114,39 @@ public class LancamentoFinanceiroServiceImpl
             );
         }
 
-        if (compraMaterial &&
-                (lancamento.getQuantidadeLancamento() == null ||
-                        lancamento.getQuantidadeLancamento()
+        if (compraMaterial) {
+
+            if (lancamento.getQuantidadeLancamento() == null ||
+                    lancamento.getQuantidadeLancamento()
+                            .compareTo(BigDecimal.ZERO) <= 0) {
+                throw new IllegalArgumentException(
+                        "Informe uma quantidade maior que zero " +
+                                "para a compra de material."
+                );
+            }
+
+            if (lancamento.getCustoUnitarioLancamento() == null) {
+                throw new IllegalArgumentException(
+                        "Informe o custo unitário do material."
+                );
+            }
+
+            // Calcula automaticamente o valor total da compra.
+            BigDecimal valorCalculado =
+                    lancamento.getQuantidadeLancamento()
+                            .multiply(lancamento.getCustoUnitarioLancamento())
+                            .setScale(2, RoundingMode.HALF_UP);
+
+            lancamento.setValorTotalLancamento(valorCalculado);
+        }
+
+// Despesas comuns e receitas continuam exigindo valor maior que zero.
+        if (!compraMaterial &&
+                (lancamento.getValorTotalLancamento() == null ||
+                        lancamento.getValorTotalLancamento()
                                 .compareTo(BigDecimal.ZERO) <= 0)) {
             throw new IllegalArgumentException(
-                    "Informe uma quantidade maior que zero "
-                            + "para a compra de material."
+                    "O valor total deve ser maior que zero."
             );
         }
 
@@ -196,6 +215,16 @@ public class LancamentoFinanceiroServiceImpl
     @Transactional(readOnly = true)
     public List<LancamentoFinanceiro> listarTodos() {
         return lancamentoRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<LancamentoFinanceiro> listarPorTipoOrdenadoPorData(
+            String tipoLancamento) {
+        return lancamentoRepository
+                .findByTipoLancamentoIgnoreCaseOrderByDataLancamentoDesc(
+                        tipoLancamento
+                );
     }
 
     @Override
