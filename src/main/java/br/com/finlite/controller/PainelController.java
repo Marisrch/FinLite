@@ -245,7 +245,51 @@ public class PainelController {
                 .map(Map.Entry::getKey)
                 .toList();
 
+        model.addAttribute("produtosDisponiveis", labelsProdutosGrafico);
+
         List<BigDecimal> valoresProdutosGrafico = produtosOrdenados
+                .stream()
+                .map(Map.Entry::getValue)
+                .toList();
+
+        // Agrupa o valor das despesas por categoria.
+        Map<String, BigDecimal> despesasPorCategoria =
+                new LinkedHashMap<>();
+
+        for (LancamentoFinanceiro despesa : despesas) {
+
+            String categoria = despesa.getCategoriaLancamento();
+
+            if (categoria == null || categoria.isBlank()) {
+                categoria = "Sem categoria";
+            }
+
+            if (despesa.getValorTotalLancamento() != null) {
+                despesasPorCategoria.merge(
+                        categoria.trim(),
+                        despesa.getValorTotalLancamento(),
+                        BigDecimal::add
+                );
+            }
+        }
+
+// Ordena as categorias da maior para a menor despesa.
+        List<Map.Entry<String, BigDecimal>> categoriasOrdenadas =
+                despesasPorCategoria.entrySet()
+                        .stream()
+                        .sorted(
+                                Map.Entry.<String, BigDecimal>comparingByValue(
+                                        Comparator.reverseOrder()
+                                )
+                        )
+                        .toList();
+
+        List<String> labelsCategoriasGrafico = categoriasOrdenadas
+                .stream()
+                .map(Map.Entry::getKey)
+                .toList();
+
+        List<BigDecimal> valoresCategoriasGrafico = categoriasOrdenadas
                 .stream()
                 .map(Map.Entry::getValue)
                 .toList();
@@ -305,6 +349,8 @@ public class PainelController {
         model.addAttribute("valoresDespesasGrafico", valoresDespesasGrafico);
         model.addAttribute("labelsProdutosGrafico", labelsProdutosGrafico);
         model.addAttribute("valoresProdutosGrafico", valoresProdutosGrafico);
+        model.addAttribute("labelsCategoriasGrafico", labelsCategoriasGrafico);
+        model.addAttribute("valoresCategoriasGrafico", valoresCategoriasGrafico);
 
         return "painel/index";
     }

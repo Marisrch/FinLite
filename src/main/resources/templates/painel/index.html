@@ -145,6 +145,18 @@
         </div>
     </div>
 
+    <div class="dashboard-section">
+        <h2>Despesas por categoria</h2>
+
+        <p class="dashboard-description">
+            Veja como as despesas estão distribuídas entre as categorias no período selecionado.
+        </p>
+
+        <div class="grafico-container">
+            <canvas id="graficoDespesasCategorias"></canvas>
+        </div>
+    </div>
+
     <!-- Indicadores de estoque -->
     <div class="dashboard-section">
 
@@ -195,7 +207,8 @@
     <!-- Biblioteca Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Dados e configuração do gráfico -->
+
+    <!-- Dados e configuração dos gráficos -->
     <script th:inline="javascript">
 
         const labelsGrafico = /*[[${labelsGrafico}]]*/ [];
@@ -292,13 +305,16 @@
 
         }
 
+        // Gráfico de vendas por produto/peça
+
         const labelsProdutos = /*[[${labelsProdutosGrafico}]]*/ [];
         const valoresProdutos = /*[[${valoresProdutosGrafico}]]*/ [];
 
         const elementoProdutos = document.getElementById("graficoVendasProdutos");
 
         if (elementoProdutos) {
-            new Chart(elementoProdutos, {
+
+            const graficoProdutos = new Chart(elementoProdutos, {
                 type: "bar",
                 data: {
                     labels: labelsProdutos,
@@ -346,7 +362,61 @@
             });
         }
 
+        // Gráfico de despesas por categoria
+
+        const labelsCategorias = /*[[${labelsCategoriasGrafico}]]*/ [];
+        const valoresCategorias = /*[[${valoresCategoriasGrafico}]]*/ [];
+
+        const elementoCategorias = document.getElementById("graficoDespesasCategorias");
+
+        if (elementoCategorias) {
+
+            const graficoCategorias = new Chart(elementoCategorias, {
+                type: "doughnut",
+                data: {
+                    labels: labelsCategorias,
+                    datasets: [{
+                        label: "Despesas por categoria",
+                        data: valoresCategorias,
+                        backgroundColor: [
+                            "#A51D1D",
+                            "#D94A4A",
+                            "#E58B8B",
+                            "#8B1515",
+                            "#C66A6A",
+                            "#6F1010",
+                            "#F0B5B5",
+                            "#B33A3A"
+                        ],
+                        borderWidth: 2,
+                        borderColor: "#FFFFFF"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.label + ": " +
+                                        Number(context.raw).toLocaleString("pt-BR", {
+                                            style: "currency",
+                                            currency: "BRL"
+                                        });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
     </script>
+
 
 </section>
 
