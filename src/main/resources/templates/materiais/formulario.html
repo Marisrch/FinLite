@@ -5,7 +5,6 @@
       th:replace="~{fragments/layout :: layout('Novo material', ~{::conteudo})}">
 
 <body>
-
 <section th:fragment="conteudo">
 
     <div class="page-header">
@@ -15,10 +14,14 @@
         </div>
     </div>
 
-    <div th:if="${erro}" class="alert-error"
-         th:text="${erro}"></div>
+    <div th:if="${erro}"
+         class="alert alert-error"
+         role="alert"
+         th:text="${erro}">
+    </div>
 
-    <form th:if="${idEmpreendedor != null}"
+    <form class="form-card"
+          th:if="${idEmpreendedor != null}"
           th:action="@{/materiais/salvar}"
           th:object="${material}"
           method="post">
@@ -27,99 +30,163 @@
                name="idEmpreendedor"
                th:value="${idEmpreendedor}">
 
-        <label>Nome do material</label>
-        <input type="text"
-               th:field="*{nomeMaterial}"
-               maxlength="100"
-               placeholder="Ex.: Linha de algodão"
-               required>
+        <div class="form-group">
+            <label for="nomeMaterial">Nome do material</label>
 
-        <label>Categoria</label>
-        <input type="text"
-               th:field="*{categoriaMaterial}"
-               list="categorias-material"
-               maxlength="50"
-               placeholder="Digite ou selecione uma categoria"
-               required>
+            <input type="text"
+                   id="nomeMaterial"
+                   th:field="*{nomeMaterial}"
+                   th:classappend="${#fields.hasErrors('nomeMaterial')} ? 'is-invalid' : ''"
+                   maxlength="100"
+                   placeholder="Ex.: Linha de algodão"
+                   required>
 
-        <datalist id="categorias-material">
-            <option value="Fios e tecidos">
-            <option value="Aviamentos">
-            <option value="Ferramentas">
-            <option value="Embalagens">
-            <option value="Acessórios">
-            <option value="Outros">
-        </datalist>
-
-        <label>Marca</label>
-        <input type="text"
-               th:field="*{marcaMaterial}"
-               maxlength="50"
-               placeholder="Ex.: Círculo">
-
-        <label>Cor</label>
-        <input type="text"
-               th:field="*{corMaterial}"
-               maxlength="50"
-               placeholder="Ex.: Vermelho">
-
-        <label>Unidade de medida</label>
-        <select th:field="*{unidadeMedidaMaterial}" required>
-            <option value="">Selecione</option>
-            <option value="UNIDADE">Unidade</option>
-            <option value="METRO">Metro</option>
-            <option value="CENTÍMETRO">Centímetro</option>
-            <option value="QUILOGRAMA">Quilograma</option>
-            <option value="GRAMA">Grama</option>
-            <option value="LITRO">Litro</option>
-            <option value="PACOTE">Pacote</option>
-            <option value="ROLO">Rolo</option>
-        </select>
-
-        <label>Quantidade mínima em estoque</label>
-        <input type="number"
-               th:field="*{quantidadeMinimaMaterial}"
-               min="0"
-               step="0.01"
-               placeholder="Ex.: 5"
-               required>
-
-        <div class="field-hint">
-            <span class="hint-icon">ⓘ</span>
-            <span>Limite para identificar quando o estoque está baixo.</span>
+            <small th:if="${#fields.hasErrors('nomeMaterial')}"
+                   th:errors="*{nomeMaterial}"
+                   class="field-error">
+            </small>
         </div>
 
-        <label>Custo unitário estimado (R$)</label>
-        <input type="number"
-               th:field="*{custoUnitarioMaterial}"
-               min="0"
-               step="0.01"
-               placeholder="Ex.: 12.50">
+        <div class="form-group">
+            <label for="categoriaMaterial">Categoria</label>
 
-        <p class="form-info">
+            <input type="text"
+                   id="categoriaMaterial"
+                   th:field="*{categoriaMaterial}"
+                   th:classappend="${#fields.hasErrors('categoriaMaterial')} ? 'is-invalid' : ''"
+                   list="categorias-material"
+                   maxlength="50"
+                   placeholder="Digite ou selecione uma categoria"
+                   required>
+
+            <small th:if="${#fields.hasErrors('categoriaMaterial')}"
+                   th:errors="*{categoriaMaterial}"
+                   class="field-error">
+            </small>
+
+            <datalist id="categorias-material">
+                <option value="Fios e tecidos">
+                <option value="Aviamentos">
+                <option value="Ferramentas">
+                <option value="Embalagens">
+                <option value="Acessórios">
+                <option value="Outros">
+            </datalist>
+        </div>
+
+        <div class="form-group">
+            <label for="marcaMaterial">Marca</label>
+
+            <input type="text"
+                   id="marcaMaterial"
+                   th:field="*{marcaMaterial}"
+                   maxlength="50"
+                   placeholder="Ex.: Círculo">
+        </div>
+
+        <div class="form-group">
+            <label for="corMaterial">Cor</label>
+
+            <input type="text"
+                   id="corMaterial"
+                   th:field="*{corMaterial}"
+                   maxlength="50"
+                   placeholder="Ex.: Vermelho">
+        </div>
+
+        <div class="form-group">
+            <label for="unidadeMedidaMaterial">Unidade de medida</label>
+
+            <select id="unidadeMedidaMaterial"
+                    th:field="*{unidadeMedidaMaterial}"
+                    th:classappend="${#fields.hasErrors('unidadeMedidaMaterial')} ? 'is-invalid' : ''"
+                    required>
+                <option value="">Selecione</option>
+                <option value="UNIDADE">Unidade</option>
+                <option value="METRO">Metro</option>
+                <option value="CENTÍMETRO">Centímetro</option>
+                <option value="QUILOGRAMA">Quilograma</option>
+                <option value="GRAMA">Grama</option>
+                <option value="LITRO">Litro</option>
+                <option value="PACOTE">Pacote</option>
+                <option value="ROLO">Rolo</option>
+            </select>
+
+            <small th:if="${#fields.hasErrors('unidadeMedidaMaterial')}"
+                   th:errors="*{unidadeMedidaMaterial}"
+                   class="field-error">
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="quantidadeMinimaMaterial">
+                Quantidade mínima em estoque
+            </label>
+
+            <input type="number"
+                   id="quantidadeMinimaMaterial"
+                   th:field="*{quantidadeMinimaMaterial}"
+                   th:classappend="${#fields.hasErrors('quantidadeMinimaMaterial')} ? 'is-invalid' : ''"
+                   step="0.01"
+                   placeholder="Ex.: 5"
+                   required>
+
+            <small th:if="${#fields.hasErrors('quantidadeMinimaMaterial')}"
+                   th:errors="*{quantidadeMinimaMaterial}"
+                   class="field-error">
+            </small>
+
+            <small class="field-hint">
+                <span class="hint-icon">ⓘ</span>
+                <span>Limite para identificar quando o estoque está baixo.</span>
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="custoUnitarioMaterial">
+                Custo unitário estimado (R$)
+            </label>
+
+            <input type="number"
+                   id="custoUnitarioMaterial"
+                   th:field="*{custoUnitarioMaterial}"
+                   th:classappend="${#fields.hasErrors('custoUnitarioMaterial')} ? 'is-invalid' : ''"
+                   min="0"
+                   step="0.01"
+                   placeholder="Ex.: 12.50">
+
+            <small th:if="${#fields.hasErrors('custoUnitarioMaterial')}"
+                   th:errors="*{custoUnitarioMaterial}"
+                   class="field-error">
+            </small>
+        </div>
+
+        <div class="form-info">
             O material será cadastrado com estoque inicial zero.
             As quantidades serão atualizadas pelas movimentações de estoque.
-        </p>
+        </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn-primary">
-                Salvar material
-            </button>
-
             <a th:href="@{/estoque}" class="btn-secondary">
                 Cancelar
             </a>
+
+            <button type="submit" class="btn-primary">
+                Salvar material
+            </button>
         </div>
 
     </form>
 
-    <a th:if="${idEmpreendedor == null}"
-       th:href="@{/materiais}"
-       class="btn-secondary">
-        Voltar para materiais
-    </a>
+    <div th:if="${idEmpreendedor == null}">
+        <p>Cadastre um empreendedor antes de registrar materiais.</p>
+
+        <a th:href="@{/empreendedores/novo}"
+           class="btn-primary">
+            Cadastrar empreendedor
+        </a>
+    </div>
 
 </section>
-
 </body>
 </html>

@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-        
+
 
         cabecalhos.forEach((cabecalho, indice) => {
 
@@ -389,4 +389,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+});
+
+// ==========================================
+// NAVEGAÇÃO — DESTAQUE DA PÁGINA ATUAL
+// ==========================================
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const caminho = window.location.pathname;
+    let ativo = null;
+
+    document.querySelectorAll('.sidebar .nav-item').forEach(function (item) {
+
+        const destino = new URL(
+            item.href,
+            window.location.origin
+        ).pathname;
+
+        const prefixo = item.dataset.prefixo;
+
+        const corresponde =
+            caminho === destino ||
+            caminho.startsWith(destino + '/') ||
+            (prefixo && caminho.startsWith(prefixo + '/'));
+
+        if (corresponde) {
+            if (!ativo || destino.length > ativo.destino.length) {
+                ativo = {
+                    item: item,
+                    destino: destino
+                };
+            }
+        }
+    });
+
+    if (ativo) {
+        ativo.item.classList.add('is-active');
+        ativo.item.setAttribute('aria-current', 'page');
+    }
 });

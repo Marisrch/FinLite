@@ -2,85 +2,102 @@
 <!DOCTYPE html>
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout('Registrar saída', ~{::conteudo})}">
+      th:replace="~{fragments/layout :: layout('Movimentação de estoque', ~{::conteudo})}">
 
 <body>
 <section th:fragment="conteudo">
 
     <div class="page-header">
         <div>
-            <h1>Registrar saída de material</h1>
-            <p>Informe os materiais utilizados na produção.</p>
+            <h1>Nova movimentação</h1>
+            <p>Registre uma entrada ou saída de material do estoque.</p>
         </div>
     </div>
 
-    <div th:if="${erro}" class="alert alert-error" th:text="${erro}"></div>
+    <div th:if="${erro}"
+         class="alert alert-error"
+         role="alert"
+         th:text="${erro}">
+    </div>
 
     <div th:if="${#lists.isEmpty(materiais)}">
-        <p>Nenhum material cadastrado. Cadastre um material antes de registrar uma saída.</p>
+
+        <div class="form-info">
+            Você ainda não possui materiais cadastrados para movimentar.
+        </div>
+
         <a th:href="@{/materiais/novo}" class="btn-primary">
             Cadastrar material
         </a>
+
     </div>
 
-    <form th:unless="${#lists.isEmpty(materiais)}"
+    <form class="form-card"
+          th:unless="${#lists.isEmpty(materiais)}"
           th:action="@{/estoque/movimentacoes/salvar}"
           method="post">
 
         <div class="form-group">
             <label for="idMaterial">Material</label>
 
-            <select id="idMaterial" name="idMaterial" required>
+            <select id="idMaterial"
+                    name="idMaterial"
+                    required>
+
                 <option value="">Selecione um material</option>
 
                 <option th:each="material : ${materiais}"
                         th:value="${material.idMaterial}"
-                        th:text="${material.nomeMaterial
-                            + ' — Estoque: '
-                            + material.quantidadeEstoqueMaterial
-                            + ' '
-                            + material.unidadeMedidaMaterial}">
+                        th:text="${material.nomeMaterial}">
                 </option>
+
             </select>
         </div>
 
         <div class="form-group">
-            <label for="quantidadeMovimentacao">Quantidade utilizada</label>
+            <label for="quantidadeMovimentacao">
+                Quantidade
+            </label>
 
             <input type="number"
                    id="quantidadeMovimentacao"
                    name="quantidadeMovimentacao"
                    min="0.01"
                    step="0.01"
-                   placeholder="Ex.: 2"
+                   placeholder="Ex.: 5"
                    required>
+
+            <small class="form-hint">
+                Informe a quantidade de material que será movimentada.
+            </small>
         </div>
 
         <div class="form-group">
-            <label for="motivoOrigem">Finalidade da saída</label>
+            <label for="motivoOrigem">
+                Motivo da movimentação
+            </label>
 
             <input type="text"
                    id="motivoOrigem"
                    name="motivoOrigem"
-                   maxlength="100"
-                   placeholder="Ex.: Produção de uma peça de crochê"
+                   maxlength="255"
+                   placeholder="Ex.: Compra de materiais ou uso na produção"
                    required>
+
         </div>
 
         <div class="form-info">
-            <p>
-                A quantidade informada será descontada automaticamente
-                do estoque do material selecionado.
-            </p>
+            O sistema identificará automaticamente o tipo de movimentação
+            e atualizará a quantidade disponível no estoque.
         </div>
 
         <div class="form-actions">
-            <a th:href="@{/estoque/movimentacoes}" class="btn-secondary">
+            <a th:href="@{/estoque}" class="btn-secondary">
                 Cancelar
             </a>
 
             <button type="submit" class="btn-primary">
-                Registrar saída
+                Registrar movimentação
             </button>
         </div>
 

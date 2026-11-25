@@ -1,7 +1,91 @@
+/* ==========================================================
+   FINLITE — style.css
+   Organização:
+    1. Variáveis globais e configurações gerais
+    2. Cabeçalho e identidade visual
+    3. Estrutura principal e navegação lateral
+    4. Tipografia e cabeçalhos das páginas
+    5. Botões
+    6. Formulários e validações
+    7. Tabelas e filtros
+    8. Botões de ação das tabelas
+    9. Painel financeiro e indicadores
+   10. Gráficos e legendas
+   11. Alertas e mensagens
+   12. Componentes específicos de estoque
+   13. Responsividade (todos os @media max-width, do maior ao menor)
+   14. Acessibilidade
+   15. Manual de uso
+========================================================== */
 
-/* ==============================
-   CONFIGURAÇÕES GERAIS
-============================== */
+
+/* ==========================================================
+   1. VARIÁVEIS GLOBAIS E CONFIGURAÇÕES GERAIS
+========================================================== */
+
+:root {
+    /* Marca */
+    --color-primary: #B3262E;
+    --color-primary-hover: #8F1D24;
+    --color-primary-soft: #FBEDEE;
+    --color-primary-ring: rgba(179, 38, 46, 0.18);
+
+    /* Fundos e superfícies */
+    --color-bg: #FAF7F4;
+    --color-surface: #FFFFFF;
+    --color-surface-warm: #F6EFE9;
+
+    /* Bordas */
+    --color-border: #EADFD9;
+    --color-border-strong: #D9CAC1;
+
+    /* Texto */
+    --color-text: #2A2327;
+    --color-text-muted: #6F6568;
+    --color-text-soft: #9A8F92;
+
+    /* Receita / despesa / avisos / neutros */
+    --color-income: #2E8B57;
+    --color-income-soft: #E7F4EC;
+    --color-income-text: #237443;
+
+    --color-expense: #C23B32;
+    --color-expense-soft: #FDECEA;
+    --color-expense-text: #9C2B24;
+
+    --color-warning-soft: #FFF4DB;
+    --color-warning-text: #8A5A0B;
+
+    --color-neutral-soft: #F1ECE8;
+    --color-neutral-text: #5B4F54;
+
+    /* Tabelas (cabeçalho vermelho, linhas alternadas, filtro ativo) */
+    --color-table-head: #B3262D;
+    --color-table-head-text: #FFF9F6;
+    --color-table-stripe: #FBEFF0;
+    --color-table-hover: #F8E2E3;
+    --color-filter-active: #851717;
+
+    /* Raios, sombras, fontes e medidas */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-pill: 999px;
+
+    --shadow-sm:
+            0 1px 2px rgba(42, 35, 39, 0.05),
+            0 2px 8px rgba(42, 35, 39, 0.04);
+
+    --shadow-md: 0 8px 24px rgba(42, 35, 39, 0.12);
+
+    --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI',
+    Roboto, Arial, sans-serif;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+    --header-height: 68px;
+    --sidebar-width: 232px;
+}
 
 * {
     margin: 0;
@@ -9,346 +93,73 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f5f6f8;
-    color: #292929;
-    font-size: 14px;
-}
-
-/* ==============================
-   CABEÇALHO
-============================== */
-
-.header {
-    height: 72px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #e8e8e8;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-}
-
-.logo {
-    color: #d62828;
-    font-size: 26px;
-    font-weight: bold;
-}
-
-/* ==============================
-   ESTRUTURA PRINCIPAL
-============================== */
-
-.app-layout {
-    display: flex;
-    min-height: calc(100vh - 72px);
-}
-
-/* ==============================
-   MENU LATERAL
-============================== */
-
-.sidebar {
-    width: 215px;
-    background-color: #ffffff;
-    border-right: 1px solid #e8e8e8;
-    padding: 25px 15px;
-    flex-shrink: 0;
-}
-
-.sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px;
-    text-decoration: none;
-    color: #555555;
-    border-radius: 7px;
-    transition: 0.2s;
-}
-
-.nav-item:hover {
-    background-color: #fff0f0;
-    color: #d62828;
-}
-
-/* ==============================
-   CONTEÚDO
-============================== */
-
-.main-content {
-    flex: 1;
-    padding: 35px;
-    min-width: 0;
-}
-
-h1 {
-    font-size: 28px;
-    margin-bottom: 8px;
-    color: #252525;
-}
-
-h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-
-p {
-    color: #777777;
-    margin-bottom: 20px;
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 15px;
     line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* ==============================
-   CABEÇALHO DAS PÁGINAS
-============================== */
-
-.page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 25px;
+a {
+    color: inherit;
 }
 
-/* ==============================
-   BOTÕES
-============================== */
-
-.btn-primary,
-button {
-    background-color: #d62828;
-    color: #ffffff;
-    border: none;
-    padding: 11px 18px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.btn-primary:hover,
-button:hover {
-    background-color: #b91f1f;
-}
-
-.btn-secondary {
-    background-color: #e9e9e9;
-    color: #444444;
-    padding: 11px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-}
-
-/* ==============================
-   FORMULÁRIOS
-============================== */
-
-form {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    max-width: 750px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 18px;
-}
-
-label {
-    font-weight: bold;
-    margin-bottom: 7px;
-    color: #444444;
-}
-
+button,
 input,
 select,
 textarea {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #dddddd;
-    border-radius: 6px;
-    font-size: 14px;
-    background-color: #ffffff;
+    font-family: inherit;
 }
 
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: #d62828;
-}
 
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 25px;
-}
-
-/* ==============================
-   TABELAS
-============================== */
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    border-radius: 9px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-thead {
-    background-color: #fff0f0;
-}
-
-th {
-    color: #a51d1d;
-    font-weight: bold;
-    text-align: left;
-}
-
-th, td {
-    padding: 14px;
-    border-bottom: 1px solid #eeeeee;
-}
-
-tbody tr:hover {
-    background-color: #fafafa;
-}
-
-/* ==============================
-   PAINEL FINANCEIRO / CARDS
-============================== */
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-    gap: 18px;
-    margin-top: 25px;
-}
-
-.card,
-.dashboard-card {
-    background-color: #ffffff;
-    padding: 22px;
-    border-radius: 10px;
-    border: 1px solid #eeeeee;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.card h3,
-.dashboard-card h3 {
-    color: #777777;
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.card strong,
-.dashboard-card strong {
-    font-size: 24px;
-    color: #d62828;
-}
-
-/* ==============================
-   MENSAGENS
-============================== */
-
-.alert {
-    padding: 13px;
-    border-radius: 6px;
-    margin-bottom: 18px;
-}
-
-.alert-error {
-    background-color: #ffe8e8;
-    color: #a51d1d;
-}
-
-.alert-success {
-    background-color: #e7f7ed;
-    color: #237443;
-}
-
-/* ==============================
-   RESPONSIVIDADE
-============================== */
-
-@media (max-width: 768px) {
-
-    .app-layout {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #eeeeee;
-    }
-
-    .sidebar-nav {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
-    .main-content {
-        padding: 20px;
-    }
-
-    .page-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    form {
-        padding: 18px;
-    }
-}
-
-/* ==============================
-   CABEÇALHO FINLITE
-============================== */
+/* ==========================================================
+   2. CABEÇALHO E IDENTIDADE VISUAL
+========================================================== */
 
 .main-header {
     width: 100%;
-    min-height: 72px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #e8e8e8;
+    min-height: var(--header-height);
+    height: var(--header-height);
+    padding: 0 30px;
+    position: relative;
+    z-index: 10;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    padding: 12px 30px;
-    position: relative;
-    z-index: 10;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .header-brand {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    flex-shrink: 0;
+    gap: 9px;
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
+.brand-icon {
+    width: 34px;
+    height: 34px;
     flex-shrink: 0;
 }
 
 .brand-name {
-    color: #d62828;
+    color: var(--color-primary);
+    font-family: var(--font-display);
     font-size: 26px;
-    font-weight: bold;
-    letter-spacing: -1px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .header-content {
@@ -359,7 +170,7 @@ tbody tr:hover {
 }
 
 .header-description {
-    color: #777777;
+    color: var(--color-text-muted);
     font-size: 13px;
 }
 
@@ -367,7 +178,7 @@ tbody tr:hover {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #444444;
+    color: var(--color-text);
     font-weight: 600;
 }
 
@@ -380,187 +191,536 @@ tbody tr:hover {
     align-items: center;
     justify-content: center;
 
-    background-color: #fff0f0;
-    color: #d62828;
-    font-weight: bold;
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+    font-weight: 700;
 }
 
-/* Cabeçalho em telas menores */
-@media (max-width: 600px) {
 
-    .main-header {
-        padding: 12px 16px;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
+/* ==========================================================
+   3. ESTRUTURA PRINCIPAL E NAVEGAÇÃO LATERAL
+========================================================== */
 
-    .header-content {
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-
-    .header-description {
-        display: none;
-    }
+.app-layout {
+    display: flex;
+    min-height: calc(100vh - var(--header-height));
 }
 
-/* FORMULÁRIO DE MATERIAIS */
-
-.form-info {
-    margin: 18px 0;
-    padding: 12px 15px;
-    background-color: #fff5f5;
-    border-left: 3px solid #d62828;
-    color: #666666;
-    font-size: 13px;
-    border-radius: 4px;
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px 36px;
 }
 
-.form-actions {
+.main-content > * {
+    width: 100%;
+    max-width: 1240px;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
+    flex-shrink: 0;
+    padding: 25px 15px;
+    background-color: var(--color-surface);
+    border-right: 1px solid var(--color-border);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nav-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-top: 20px;
-    flex-wrap: wrap;
+    padding: 12px 13px;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    border-radius: var(--radius-sm);
+    transition: background-color 0.2s, color 0.2s;
 }
 
+.nav-item:hover {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+}
 
-/* SITUAÇÃO DO ESTOQUE */
+.nav-icon {
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    color: currentColor;
+}
 
-.status-baixo {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-    background-color: #fff0f0;
-    color: #c62828;
-    font-size: 12px;
+/* Página atual (classe aplicada pelo script.js) */
+.sidebar .nav-item.is-active {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
     font-weight: 600;
 }
 
-.status-normal {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-    background-color: #eaf7ee;
-    color: #278044;
-    font-size: 12px;
-    font-weight: 600;
+.sidebar .nav-item.is-active .nav-icon {
+    color: var(--color-primary);
 }
 
-/* ORIENTAÇÃO DISCRETA DOS CAMPOS */
 
-.field-hint {
+/* ==========================================================
+   4. TIPOGRAFIA E CABEÇALHOS DAS PÁGINAS
+========================================================== */
+
+h1 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 8px;
+    color: var(--color-text);
+}
+
+h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 15px;
+    color: var(--color-text);
+}
+
+h3 {
+    color: var(--color-text);
+}
+
+p {
+    color: var(--color-text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.page-header {
     display: flex;
     align-items: center;
-    gap: 7px;
-    margin-top: 7px;
-    margin-bottom: 18px;
-    color: #777777;
-    font-size: 12px;
-    line-height: 1.4;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--color-border-strong);
 }
 
-.hint-icon {
-    color: #d62828;
-    font-size: 15px;
-    font-weight: bold;
-    flex-shrink: 0;
+.page-header > div:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
 }
-
-/* AÇÕES DO CABEÇALHO DAS PÁGINAS */
 
 .page-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin-top: 6px;
 }
 
-
-
-/* ==============================
-   FILTROS DA TABELA DE VENDAS
-============================== */
-
-/* Posicionamento dos filtros em todas as tabelas */
-
-[data-tabela-filtros] {
-    overflow: visible;
-}
-
-[data-tabela-filtros] th {
-    position: relative;
+.page-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 9px 13px;
+    font-size: 13px;
     white-space: nowrap;
 }
 
-/* Botão de filtro normal */
-.btn-filtro {
-    background-color: transparent;
-    color: #a51d1d;
-    border: none;
-    padding: 4px 6px;
-    margin-left: 4px;
-    border-radius: 5px;
-    font-size: 11px;
+
+/* ==========================================================
+   5. BOTÕES
+========================================================== */
+
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
-/* Efeito ao passar o mouse no botão normal */
-.btn-filtro:hover {
-    background-color: #f8dada;
-    color: #d62828;
-}
-
-/* Botão de filtro quando a coluna possui filtro ativo */
-.btn-filtro.filtro-ativo {
-    background-color: #A51D1D;
+.btn-primary {
+    background-color: var(--color-primary);
     color: #FFFFFF;
+    border: 1px solid var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+    background-color: var(--color-neutral-soft);
+    color: var(--color-neutral-text);
+    border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-border);
+}
+
+
+/* ==========================================================
+   6. FORMULÁRIOS E VALIDAÇÕES
+========================================================== */
+
+/* Padrão geral (usado, por exemplo, no formulário de vendas) */
+form {
+    background-color: var(--color-surface);
+    padding: 25px;
+    border-radius: var(--radius-md);
+    max-width: 750px;
+    box-shadow: var(--shadow-sm);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: var(--color-text);
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-ring);
+}
+
+/* Botões de ação (Salvar / Cancelar) */
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 0;
+}
+
+.form-actions .btn-secondary {
+    white-space: nowrap;
+}
+
+/* Cartão de formulário (padrão atual) */
+.form-card {
+    width: 100%;
+    max-width: 750px;
+    padding: 28px;
+    margin: 0;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.form-card .form-group {
+    gap: 7px;
+    margin-bottom: 20px;
+}
+
+.form-card label {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+    min-height: 42px;
+    padding: 10px 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-card .form-actions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.form-card .form-actions .btn-primary,
+.form-card .form-actions .btn-secondary {
+    white-space: nowrap;
+}
+
+/* Mensagens auxiliares */
+.form-info {
+    margin: 18px 0;
+    padding: 12px 15px;
+    background-color: var(--color-primary-soft);
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 13px;
+}
+
+/* Dentro do cartão de formulário */
+.form-card .form-info {
+    margin: 8px 0 20px;
+    padding: 13px 15px;
+    line-height: 1.5;
+}
+
+.field-hint {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.hint-icon {
+    color: var(--color-primary);
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Validação */
+.form-card .field-error {
+    display: block;
+    margin-top: 6px;
+    color: var(--color-expense-text);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.form-card input.is-invalid,
+.form-card select.is-invalid,
+.form-card textarea.is-invalid {
+    border-color: var(--color-expense);
+    background-color: var(--color-expense-soft);
+}
+
+.form-card input.is-invalid:focus,
+.form-card select.is-invalid:focus,
+.form-card textarea.is-invalid:focus {
+    border-color: var(--color-expense);
+    box-shadow: 0 0 0 3px rgba(194, 59, 50, 0.14);
+}
+
+
+/* ==========================================================
+   7. TABELAS E FILTROS
+   Vale para as tabelas #tabelaVendas, #tabelaReceitas,
+   #tabelaDespesas, #tabelaEstoque, #tabelaMovimentacoes
+   (atributo data-tabela-filtros, usado pelo script.js)
+   e para a tabela do painel (.dashboard-stock-table).
+
+   ATENÇÃO: não usar overflow: hidden nas tabelas ou nos
+   cabeçalhos — o menu dos filtros é aberto dentro do <th>.
+========================================================== */
+
+/* ---------- 7.1 Base e aparência (todas as tabelas) ---------- */
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+thead {
+    background-color: var(--color-primary-soft);
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+th {
+    font-weight: 600;
+    text-align: left;
+}
+
+/* Cabeçalho vermelho */
+table thead th {
+    background-color: var(--color-table-head);
+    color: var(--color-table-head-text);
+}
+
+/* Linhas alternadas e hover */
+table tbody tr:nth-child(even):not(.linha-sem-registros):not(:hover) {
+    background-color: var(--color-table-stripe);
+}
+
+tbody tr:hover {
+    background-color: var(--color-bg);
+}
+
+.dashboard-stock-table tbody tr:hover {
+    background-color: var(--color-table-hover);
+}
+
+/* Cantos arredondados */
+table thead th:first-child {
+    border-top-left-radius: var(--radius-md);
+}
+
+table thead th:last-child {
+    border-top-right-radius: var(--radius-md);
+}
+
+table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--radius-md);
+}
+
+table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--radius-md);
+}
+
+/* ---------- 7.2 Tabelas com filtros ---------- */
+
+table[data-tabela-filtros] {
+    max-width: 100%;
+}
+
+table[data-tabela-filtros] th {
+    position: relative;
+    padding: 12px 25px 12px 10px;
+    font-size: 12px;
+    white-space: normal;
+    vertical-align: middle;
+    overflow-wrap: break-word;
+}
+
+table[data-tabela-filtros] td {
+    padding: 12px 10px;
+    font-size: 13px;
+    white-space: nowrap;
+    vertical-align: middle;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+/* Colunas de texto livre: podem quebrar linha em vez de invadir a vizinha */
+#tabelaVendas td:nth-child(2),
+#tabelaVendas td:nth-child(3),
+#tabelaVendas td:nth-child(5),
+#tabelaVendas td:nth-child(6),
+#tabelaReceitas td:nth-child(3),
+#tabelaReceitas td:nth-child(4),
+#tabelaDespesas td:nth-child(3),
+#tabelaDespesas td:nth-child(4),
+#tabelaEstoque td:nth-child(1),
+#tabelaEstoque td:nth-child(2),
+#tabelaMovimentacoes td:nth-child(3),
+#tabelaMovimentacoes td:nth-child(6) {
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* ---------- 7.3 Botão de filtro (▼) no cabeçalho ---------- */
+
+.btn-filtro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    margin: 0;
+    padding: 4px;
+    border: none;
     border-radius: 5px;
+    background-color: transparent;
+    color: var(--color-table-head-text);
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-/* Efeito ao passar o mouse no filtro ativo */
-.btn-filtro.filtro-ativo:hover {
-    background-color: #851717;
+.btn-filtro:hover {
+    background-color: rgba(255, 255, 255, 0.16);
     color: #FFFFFF;
 }
 
-/* Menu suspenso */
+/* Filtro ativo: vermelho escuro */
+.btn-filtro.filtro-ativo,
+.btn-filtro.filtro-ativo:hover {
+    background-color: var(--color-filter-active);
+    color: #FFFFFF;
+}
+
+/* ---------- 7.4 Menu suspenso dos filtros (criado pelo script.js) ---------- */
+
 .menu-filtro {
     position: absolute;
     top: calc(100% + 5px);
     left: 5px;
     z-index: 1000;
-    width: 235px;
+    width: 250px;
     padding: 12px;
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    color: #444444;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text);
     font-weight: normal;
     text-align: left;
     white-space: normal;
 }
 
-/* Campo de pesquisa */
 .menu-filtro .pesquisa-filtro {
     width: 100%;
     padding: 9px;
     margin-bottom: 10px;
-    border: 1px solid #dddddd;
-    border-radius: 5px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
     font-size: 13px;
 }
 
-/* Opções e caixas de seleção */
 .menu-filtro .opcao-filtro {
     display: flex;
     align-items: center;
     gap: 9px;
     padding: 8px 5px;
     margin: 0;
-    color: #444444;
+    color: var(--color-text);
     font-size: 13px;
     font-weight: normal;
     cursor: pointer;
@@ -568,26 +728,24 @@ tbody tr:hover {
 }
 
 .menu-filtro .opcao-filtro:hover {
-    background-color: #fff0f0;
+    background-color: var(--color-primary-soft);
 }
 
 .menu-filtro .opcao-filtro input[type="checkbox"] {
     width: auto;
     margin: 0;
-    accent-color: #d62828;
+    accent-color: var(--color-primary);
     cursor: pointer;
 }
 
-/* Lista de opções */
 .lista-filtro {
     max-height: 190px;
     overflow-y: auto;
-    border-top: 1px solid #eeeeee;
-    border-bottom: 1px solid #eeeeee;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     padding: 5px 0;
 }
 
-/* Botões do menu */
 .acoes-filtro {
     display: flex;
     justify-content: space-between;
@@ -603,151 +761,803 @@ tbody tr:hover {
 }
 
 .acoes-filtro button:first-child {
-    background-color: #eeeeee;
-    color: #444444;
+    background-color: var(--color-neutral-soft);
+    color: var(--color-neutral-text);
 }
 
 .acoes-filtro button:first-child:hover {
-    background-color: #dddddd;
+    background-color: var(--color-border);
 }
 
 .acoes-filtro button:last-child {
-    background-color: #d62828;
-    color: #ffffff;
+    background-color: var(--color-primary);
+    color: #FFFFFF;
 }
 
 .acoes-filtro button:last-child:hover {
-    background-color: #b91f1f;
+    background-color: var(--color-primary-hover);
 }
 
-/* ==============================
-   AÇÕES DAS TABELAS
-============================== */
+/* ---------- 7.5 Largura preferida das colunas ----------
+   São porcentagens "de preferência": com o layout automático da
+   tabela nenhuma coluna fica menor que o seu conteúdo (cabeçalho
+   com a seta ▼, valores em uma linha, botões de ação). */
+/* Vendas */
+#tabelaVendas th:nth-child(1) { width: 5%; }
+#tabelaVendas th:nth-child(2) { width: 7%; }
+#tabelaVendas th:nth-child(3) { width: 11%; }
+#tabelaVendas th:nth-child(4) { width: 8%; }
+#tabelaVendas th:nth-child(5) { width: 15%; }
+#tabelaVendas th:nth-child(6) { width: 14%; }
+#tabelaVendas th:nth-child(7) { width: 10%; }
+#tabelaVendas th:nth-child(8) { width: 10%; }
+#tabelaVendas th:nth-child(9) { width: 20%; }
 
-.form-actions form {
-    max-width: none;
+/* Receitas e Despesas */
+#tabelaReceitas th:nth-child(1),
+#tabelaDespesas th:nth-child(1) { width: 6%; }
+
+#tabelaReceitas th:nth-child(2),
+#tabelaDespesas th:nth-child(2) { width: 12%; }
+
+#tabelaReceitas th:nth-child(3),
+#tabelaDespesas th:nth-child(3) { width: 22%; }
+
+#tabelaReceitas th:nth-child(4),
+#tabelaDespesas th:nth-child(4) { width: 18%; }
+
+#tabelaReceitas th:nth-child(5),
+#tabelaDespesas th:nth-child(5) { width: 12%; }
+
+#tabelaReceitas th:nth-child(6),
+#tabelaDespesas th:nth-child(6) { width: 11%; }
+
+#tabelaReceitas th:nth-child(7),
+#tabelaDespesas th:nth-child(7) { width: 19%; }
+
+/* Estoque */
+#tabelaEstoque th:nth-child(1) { width: 15%; }
+#tabelaEstoque th:nth-child(2) { width: 15%; }
+#tabelaEstoque th:nth-child(3) { width: 10%; }
+#tabelaEstoque th:nth-child(4) { width: 10%; }
+#tabelaEstoque th:nth-child(5) { width: 10%; }
+#tabelaEstoque th:nth-child(6) { width: 11%; }
+#tabelaEstoque th:nth-child(7) { width: 13%; }
+#tabelaEstoque th:nth-child(8) { width: 16%; }
+
+/* Movimentações */
+#tabelaMovimentacoes th:nth-child(1) { width: 6%; }
+#tabelaMovimentacoes th:nth-child(2) { width: 16%; }
+#tabelaMovimentacoes th:nth-child(3) { width: 17%; }
+#tabelaMovimentacoes th:nth-child(4) { width: 12%; }
+#tabelaMovimentacoes th:nth-child(5) { width: 10%; }
+#tabelaMovimentacoes th:nth-child(6) { width: 25%; }
+#tabelaMovimentacoes th:nth-child(7) { width: 14%; }
+
+
+/* ==========================================================
+   8. BOTÕES DE AÇÃO DAS TABELAS (Editar / Excluir)
+========================================================== */
+
+/* O <form> de exclusão não deve herdar o visual de cartão */
+table[data-tabela-filtros] td form {
     width: auto;
+    max-width: none;
+    min-width: 0;
     padding: 0;
     margin: 0;
     background: transparent;
+    border: none;
     border-radius: 0;
     box-shadow: none;
 }
 
-.form-actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 0;
-    flex-wrap: nowrap;
+table[data-tabela-filtros] .form-actions {
+    gap: 6px;
 }
 
-.form-actions .btn-secondary {
-    white-space: nowrap;
+/* Altura efetiva (40px) vem do min-height do .btn-secondary */
+table[data-tabela-filtros] td .btn-secondary {
+    box-sizing: border-box;
+    width: 70px;
+    min-width: 70px;
+    padding: 0 6px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
 }
 
-/* ==============================
-   CABEÇALHOS DAS TABELAS COM FILTROS
-============================== */
 
-[data-tabela-filtros] th {
-    position: relative;
-    white-space: normal;
-    vertical-align: middle;
-    padding-right: 28px;
-}
+/* ==========================================================
+   9. PAINEL FINANCEIRO E INDICADORES
+========================================================== */
 
-[data-tabela-filtros] th .btn-filtro {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    position: absolute;
-    right: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-
-    margin: 0;
-    padding: 4px;
-    line-height: 1;
-}
-
-/* Filtro de período do painel */
+/* Filtro de período */
 .filtro-periodo {
     display: flex;
     align-items: end;
-    gap: 16px;
     flex-wrap: wrap;
+    gap: 16px;
+    width: 100%;
+    max-width: none;
     margin-bottom: 24px;
     padding: 18px 20px;
-    background-color: #ffffff;
-    border: 1px solid #e5e5e5;
-    border-radius: 10px;
-}
-
-.campo-filtro-periodo {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.campo-filtro-periodo label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #444444;
-}
-
-.campo-filtro-periodo input {
-    min-width: 180px;
-    padding: 10px 12px;
-    border: 1px solid #d5d5d5;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 14px;
-    color: #333333;
-    background-color: #ffffff;
-}
-
-.campo-filtro-periodo input:focus {
-    outline: none;
-    border-color: #A51D1D;
-    box-shadow: 0 0 0 2px rgba(165, 29, 29, 0.10);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
 }
 
 .filtro-periodo button {
     min-height: 39px;
+    margin-left: auto;
     cursor: pointer;
 }
 
-@media (max-width: 600px) {
-    .filtro-periodo {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .campo-filtro-periodo input {
-        width: 100%;
-        box-sizing: border-box;
-    }
+.campo-filtro-periodo {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 180px;
 }
 
-/* Gráfico de evolução financeira */
+.campo-filtro-periodo label {
+    font-size: 13px;
+}
+
+.campo-filtro-periodo input {
+    min-width: 0;
+    padding: 10px 12px;
+}
+
+/* Cartões de indicadores */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.dashboard-card {
+    min-width: 0;
+    padding: 22px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 3px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-card--receita { border-top-color: var(--color-income); }
+.dashboard-card--despesa { border-top-color: var(--color-expense); }
+.dashboard-card--saldo   { border-top-color: var(--color-primary); }
+
+.dashboard-card h3 {
+    margin-bottom: 12px;
+    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dashboard-card .dashboard-value {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.dashboard-card--receita .dashboard-value { color: var(--color-income-text); }
+.dashboard-card--despesa .dashboard-value { color: var(--color-expense-text); }
+
+/* Saldo: não quebra linha e se ajusta à largura */
+.dashboard-card--saldo .dashboard-value {
+    white-space: nowrap;
+    font-size: clamp(18px, 2vw, 28px);
+}
+
+.dashboard-card .valor-positivo { color: var(--color-income-text); }
+.dashboard-card .valor-negativo { color: var(--color-expense-text); }
+
+/* Resumo financeiro */
+.dashboard-section--summary {
+    margin-top: 24px;
+    padding: 24px 26px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-section--summary h2 {
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--color-border-strong);
+}
+
+.dashboard-section--summary .dashboard-summary p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 13px;
+}
+
+.dashboard-section--summary .dashboard-summary p:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.dashboard-section--summary .dashboard-summary strong {
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================
+   10. GRÁFICOS E LEGENDAS
+========================================================== */
+
+.dashboard-section--chart {
+    margin-top: 28px;
+    padding: 26px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-section--chart h2 {
+    margin-bottom: 8px;
+    font-size: 21px;
+}
+
+.dashboard-description {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Área do canvas (Chart.js) */
 .grafico-container {
     position: relative;
     width: 100%;
     height: 320px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
-.dashboard-description {
-    color: #777777;
+.dashboard-section--chart .grafico-container {
+    margin-top: 22px;
+}
+
+/* Legenda externa interativa */
+.grafico-legenda-externa {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 14px;
+    margin-bottom: 4px;
+}
+
+.grafico-legenda-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
     font-size: 13px;
-    margin-top: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.grafico-legenda-item:hover {
+    opacity: 0.75;
+}
+
+.grafico-legenda-cor {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+.grafico-legenda-item[aria-pressed="false"] {
+    opacity: 0.4;
+    text-decoration: line-through;
+}
+
+
+/* ==========================================================
+   11. ALERTAS E MENSAGENS
+   Atenção: as páginas de Despesas, Receitas e Estoque usam
+   .alert-success / .alert-error SEM a classe .alert, por isso
+   as variantes continuam independentes da base.
+========================================================== */
+
+.alert {
+    display: block;
+    width: 100%;
+    padding: 13px 16px;
+    margin-bottom: 18px;
+    border: 1px solid transparent;
+    border-left-width: 4px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.alert p {
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+}
+
+.alert p + p {
+    margin-top: 5px;
+}
+
+.alert-success {
+    background-color: var(--color-income-soft);
+    border-color: #C6E7D2;
+    border-left-color: var(--color-income);
+    color: var(--color-income-text);
+}
+
+.alert-error {
+    background-color: var(--color-expense-soft);
+    border-color: #F5D0CC;
+    border-left-color: var(--color-expense);
+    color: var(--color-expense-text);
+}
+
+
+/* ==========================================================
+   12. COMPONENTES ESPECÍFICOS DE ESTOQUE
+========================================================== */
+
+.status-baixo,
+.status-normal {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-baixo {
+    background-color: #B3262D;
+    color: #FFF9F6;
+}
+
+.status-normal {
+    background-color: #357A50;
+    color: #FFF9F6;
+}
+
+/* Situação em uma linha, centralizada na coluna */
+#tabelaEstoque .status-baixo,
+#tabelaEstoque .status-normal {
+    max-width: 100%;
+    padding: 5px 8px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+#tabelaEstoque td:nth-child(8) {
+    padding-left: 6px;
+    padding-right: 6px;
+    text-align: center;
+}
+
+
+/* ==========================================================
+   13. RESPONSIVIDADE
+   Do maior para o menor: 1200 → 900 → 768 → 600 → 480
+========================================================== */
+
+/* ---------- Até 1200px: tabelas com filtros ----------
+   - colunas se ajustam ao conteúdo (sem texto sobreposto);
+   - a área de conteúdo rola na horizontal quando a tabela
+     for mais larga que a tela (rolagem fica no .main-content,
+     nunca na tabela, para não cortar o menu dos filtros);
+   - o menu dos filtros passa a abrir centralizado na tela
+     (position: fixed), sem ser cortado pela rolagem. */
+@media (max-width: 1200px) {
+
+    .main-content:has(table[data-tabela-filtros]) {
+        overflow-x: auto;
+    }
+
+    .menu-filtro {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(280px, calc(100vw - 32px));
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .header-description {
+        display: none;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .page-actions {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .app-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 15px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 8px;
+        padding-bottom: 4px;
+    }
+
+    .nav-item {
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    .main-content {
+        padding: 18px;
+    }
+
+    form,
+    .form-card {
+        padding: 20px;
+    }
+
+    .form-card .form-actions {
+        justify-content: flex-start;
+    }
+
+    th,
+    td {
+        padding: 10px 12px;
+    }
+
+    .dashboard-section--chart {
+        padding: 18px;
+        margin-top: 20px;
+    }
+
+    .dashboard-section--chart .grafico-container {
+        height: 260px;
+    }
 }
 
 @media (max-width: 600px) {
-    .grafico-container {
-        height: 260px;
+
+    .main-header {
+        padding: 0 16px;
     }
+
+    .header-content {
+        gap: 12px;
+    }
+
+    .filtro-periodo {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 16px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-card .form-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .form-card .form-actions .btn-primary,
+    .form-card .form-actions .btn-secondary {
+        width: 100%;
+    }
+}
+
+
+/* ==========================================================
+   14. ACESSIBILIDADE
+========================================================== */
+
+:focus-visible {
+    outline: 3px solid var(--color-primary-ring);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* ==========================================================
+15. MANUAL DE USO
+========================================================== */
+
+.manual {
+    max-width: 880px;
+}
+
+.manual-indice,
+.manual-section {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.manual-indice {
+    padding: 22px 26px;
+}
+
+.manual-indice h2 {
+    margin-bottom: 14px;
+    font-size: 18px;
+}
+
+.manual-indice ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 8px 16px;
+    list-style: none;
+}
+
+.manual-indice a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.manual-indice a:hover {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+}
+
+.manual-section {
+    margin-top: 24px;
+    padding: 28px;
+}
+
+.manual-section h2 {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--color-border-strong);
+}
+
+.manual-section h3 {
+    margin: 24px 0 8px;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.manual-section p,
+.manual-section li,
+.manual-section dd {
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+.manual-section p {
+    margin-bottom: 12px;
+}
+
+.manual-section a:not(.manual-voltar) {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Nome de botão ou menu, como aparece na tela */
+.manual-botao {
+    display: inline-block;
+    padding: 1px 8px;
+    background-color: var(--color-neutral-soft);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-neutral-text);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Passos numerados */
+.manual-passos {
+    display: grid;
+    gap: 12px;
+    margin: 14px 0;
+    list-style: none;
+    counter-reset: passo;
+}
+
+.manual-passos li {
+    position: relative;
+    padding-left: 40px;
+    color: var(--color-text-muted);
+    counter-increment: passo;
+}
+
+.manual-passos li::before {
+    content: counter(passo);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary-soft);
+    border-radius: 50%;
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.manual-passos strong,
+.manual-lista strong,
+.manual-campos strong {
+    color: var(--color-text);
+}
+
+/* Listas simples */
+.manual-lista {
+    display: grid;
+    gap: 8px;
+    margin: 10px 0;
+    padding-left: 20px;
+    color: var(--color-text-muted);
+}
+
+.manual-lista li::marker {
+    color: var(--color-primary);
+}
+
+/* Campo / explicação */
+.manual-campos {
+    display: grid;
+    grid-template-columns: 210px 1fr;
+    margin: 10px 0 4px;
+    border-top: 1px solid var(--color-border);
+}
+
+.manual-campos dt,
+.manual-campos dd {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.manual-campos dt {
+    padding-right: 16px;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.manual-campos dd {
+    color: var(--color-text-muted);
+}
+
+/* Destaques */
+.manual-dica,
+.manual-atencao {
+    margin: 16px 0 6px;
+    padding: 13px 16px;
+    border-left: 3px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-primary-soft);
+    color: var(--color-text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.manual-dica strong,
+.manual-atencao strong {
+    display: block;
+    margin-bottom: 2px;
+    color: var(--color-primary);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.manual-atencao {
+    border-left-color: var(--color-warning-text);
+    background-color: var(--color-warning-soft);
+}
+
+.manual-atencao strong {
+    color: var(--color-warning-text);
+}
+
+.manual-voltar {
+    display: inline-block;
+    margin-top: 18px;
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.manual-voltar:hover {
+    text-decoration: underline;
+}
+
+/* Perguntas frequentes */
+.manual-faq details {
+    padding: 14px 0;
+    border-bottom: 1px dashed var(--color-border-strong);
+}
+
+.manual-faq summary {
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manual-faq summary::marker {
+    color: var(--color-primary);
+}
+
+.manual-faq details p {
+    margin: 10px 0 0 18px;
 }

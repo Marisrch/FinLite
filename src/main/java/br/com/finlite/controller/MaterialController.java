@@ -7,6 +7,7 @@ import br.com.finlite.service.EmpreendedorService;
 import br.com.finlite.service.MaterialService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,7 +27,7 @@ public class MaterialController {
         this.materialService = materialService;
         this.empreendedorService = empreendedorService;
     }
-    
+
     @GetMapping("/novo")
     public String novoMaterial(Model model) {
 
@@ -52,7 +53,8 @@ public class MaterialController {
 
     @PostMapping("/salvar")
     public String salvar(
-            @ModelAttribute Material material,
+            @ModelAttribute("material") Material material,
+            BindingResult resultado,
             @RequestParam Integer idEmpreendedor,
             RedirectAttributes redirectAttributes,
             Model model) {
@@ -65,6 +67,7 @@ public class MaterialController {
                     "erro",
                     "Empreendedor não encontrado. Verifique o cadastro."
             );
+
             model.addAttribute("material", material);
             return prepararFormulario(model);
         }
@@ -83,9 +86,35 @@ public class MaterialController {
 
         } catch (IllegalArgumentException e) {
 
-            model.addAttribute("erro", e.getMessage());
-            model.addAttribute("material", material);
+            String mensagem = e.getMessage();
 
+            if (mensagem != null) {
+                if (mensagem.contains("nome")) {
+                    resultado.rejectValue(
+                            "nomeMaterial", "material.nome", mensagem
+                    );
+                } else if (mensagem.contains("categoria")) {
+                    resultado.rejectValue(
+                            "categoriaMaterial", "material.categoria", mensagem
+                    );
+                } else if (mensagem.contains("unidade de medida")) {
+                    resultado.rejectValue(
+                            "unidadeMedidaMaterial", "material.unidade", mensagem
+                    );
+                } else if (mensagem.contains("quantidade mínima")) {
+                    resultado.rejectValue(
+                            "quantidadeMinimaMaterial", "material.quantidade", mensagem
+                    );
+                } else if (mensagem.contains("custo unitário")) {
+                    resultado.rejectValue(
+                            "custoUnitarioMaterial", "material.custo", mensagem
+                    );
+                } else {
+                    model.addAttribute("erro", mensagem);
+                }
+            }
+
+            model.addAttribute("material", material);
             return prepararFormulario(model);
         }
     }

@@ -1,7 +1,31 @@
+
 <header class="main-header" th:fragment="header">
-    <div class="header-brand">
+    <a th:href="@{/painel}" class="header-brand">
+        <svg class="brand-icon"
+             viewBox="0 0 32 32"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true">
+
+            <rect width="32" height="32" rx="8" fill="#B3262E"/>
+
+            <g fill="none"
+               stroke="#FFFFFF"
+               stroke-width="2.2"
+               stroke-linecap="round"
+               stroke-linejoin="round">
+
+                <circle cx="15" cy="15.5" r="8.5"/>
+
+                <path d="M12 7.6C16.5 9 21 12.5 22.8 17.5"/>
+
+                <path d="M8.6 10.2C12.5 11 17.5 15.5 20.6 21.6C22.4 24 25 25.6 27.4 24.6"/>
+
+                <path d="M7 16.8C10.5 17 14 19.5 16.5 23.3"/>
+            </g>
+        </svg>
+
         <span class="brand-name">FinLite</span>
-    </div>
+    </a>
 
     <div class="header-content">
         <span class="header-description">

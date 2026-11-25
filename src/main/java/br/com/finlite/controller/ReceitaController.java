@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.validation.BindingResult;
 
 @Controller
 @RequestMapping("/receitas")
@@ -111,6 +112,7 @@ public class ReceitaController {
     @PostMapping("/salvar")
     public String salvar(
             @ModelAttribute("lancamento") LancamentoFinanceiro lancamento,
+            BindingResult resultado,
             @RequestParam Integer idEmpreendedor,
             Model model,
             RedirectAttributes redirectAttributes) {
@@ -148,7 +150,43 @@ public class ReceitaController {
 
         } catch (IllegalArgumentException e) {
 
-            model.addAttribute("erro", e.getMessage());
+            String mensagem = e.getMessage();
+
+            if (mensagem != null) {
+
+                if (mensagem.contains("data")) {
+                    resultado.rejectValue(
+                            "dataLancamento",
+                            "receita.data",
+                            mensagem
+                    );
+
+                } else if (mensagem.contains("descrição")) {
+                    resultado.rejectValue(
+                            "descricaoLancamento",
+                            "receita.descricao",
+                            mensagem
+                    );
+
+                } else if (mensagem.contains("categoria")) {
+                    resultado.rejectValue(
+                            "categoriaLancamento",
+                            "receita.categoria",
+                            mensagem
+                    );
+
+                } else if (mensagem.contains("valor total")) {
+                    resultado.rejectValue(
+                            "valorTotalLancamento",
+                            "receita.valor",
+                            mensagem
+                    );
+
+                } else {
+                    model.addAttribute("erro", mensagem);
+                }
+            }
+
             model.addAttribute("idEmpreendedor", idEmpreendedor);
 
             return "receitas/formulario";

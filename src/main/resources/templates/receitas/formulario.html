@@ -23,15 +23,20 @@
         </div>
     </div>
 
-    <div th:if="${erro}" class="alert alert-error"
+    <div th:if="${erro}"
+         class="alert alert-error"
+         role="alert"
          th:text="${erro}">
     </div>
 
-    <div th:if="${sucesso}" class="alert alert-success"
+    <div th:if="${sucesso}"
+         class="alert alert-success"
+         role="alert"
          th:text="${sucesso}">
     </div>
 
-    <form th:if="${idEmpreendedor != null}"
+    <form class="form-card"
+          th:if="${idEmpreendedor != null}"
           th:action="@{/receitas/salvar}"
           th:object="${lancamento}"
           method="post">
@@ -56,7 +61,12 @@
                    th:value="${lancamento.dataLancamento != null
                        ? #temporals.format(lancamento.dataLancamento, 'yyyy-MM-dd')
                        : ''}"
-                   required>
+                   th:classappend="${#fields.hasErrors('dataLancamento')} ? 'is-invalid' : ''">
+
+            <small class="field-error"
+                   th:if="${#fields.hasErrors('dataLancamento')}"
+                   th:errors="*{dataLancamento}">
+            </small>
         </div>
 
         <div class="form-group">
@@ -65,9 +75,14 @@
             <input type="text"
                    id="descricaoLancamento"
                    th:field="*{descricaoLancamento}"
+                   th:classappend="${#fields.hasErrors('descricaoLancamento')} ? 'is-invalid' : ''"
                    maxlength="255"
-                   placeholder="Ex.: Serviço de artesanato"
-                   required>
+                   placeholder="Ex.: Serviço de artesanato">
+
+            <small class="field-error"
+                   th:if="${#fields.hasErrors('descricaoLancamento')}"
+                   th:errors="*{descricaoLancamento}">
+            </small>
         </div>
 
         <div class="form-group">
@@ -75,7 +90,7 @@
 
             <select id="categoriaLancamento"
                     th:field="*{categoriaLancamento}"
-                    required>
+                    th:classappend="${#fields.hasErrors('categoriaLancamento')} ? 'is-invalid' : ''">
 
                 <option value="">Selecione</option>
                 <option value="SERVIÇOS">Serviços</option>
@@ -83,6 +98,11 @@
                 <option value="ENCOMENDAS">Encomendas</option>
                 <option value="OUTROS">Outros</option>
             </select>
+
+            <small class="field-error"
+                   th:if="${#fields.hasErrors('categoriaLancamento')}"
+                   th:errors="*{categoriaLancamento}">
+            </small>
         </div>
 
         <div class="form-group">
@@ -93,10 +113,14 @@
             <input type="number"
                    id="valorTotalLancamento"
                    th:field="*{valorTotalLancamento}"
-                   min="0.01"
+                   th:classappend="${#fields.hasErrors('valorTotalLancamento')} ? 'is-invalid' : ''"
                    step="0.01"
-                   placeholder="Ex.: 150.00"
-                   required>
+                   placeholder="Ex.: 150.00">
+
+            <small class="field-error"
+                   th:if="${#fields.hasErrors('valorTotalLancamento')}"
+                   th:errors="*{valorTotalLancamento}">
+            </small>
         </div>
 
         <div class="form-actions">

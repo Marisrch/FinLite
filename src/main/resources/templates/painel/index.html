@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org"
@@ -48,7 +49,7 @@
     <!-- Indicadores financeiros -->
     <div class="dashboard-grid">
 
-        <div class="dashboard-card">
+        <div class="dashboard-card dashboard-card--receita">
             <h3>Receitas</h3>
             <p class="dashboard-value"
                th:text="${'R$ ' + #numbers.formatDecimal(totalReceitas, 1, 'POINT', 2, 'COMMA')}">
@@ -57,7 +58,7 @@
             <small>Vendas concluídas e outras receitas</small>
         </div>
 
-        <div class="dashboard-card">
+        <div class="dashboard-card dashboard-card--despesa">
             <h3>Despesas</h3>
             <p class="dashboard-value"
                th:text="${'R$ ' + #numbers.formatDecimal(totalDespesas, 1, 'POINT', 2, 'COMMA')}">
@@ -66,16 +67,17 @@
             <small>Total de despesas registradas</small>
         </div>
 
-        <div class="dashboard-card">
+        <div class="dashboard-card dashboard-card--saldo">
             <h3>Saldo</h3>
             <p class="dashboard-value"
+               th:classappend="${saldo < 0} ? 'valor-negativo' : 'valor-positivo'"
                th:text="${'R$ ' + #numbers.formatDecimal(saldo, 1, 'POINT', 2, 'COMMA')}">
                 R$ 0,00
             </p>
             <small>Receitas menos despesas</small>
         </div>
 
-        <div class="dashboard-card">
+        <div class="dashboard-card dashboard-card--estoque">
             <h3>Valor em estoque</h3>
             <p class="dashboard-value"
                th:text="${'R$ ' + #numbers.formatDecimal(valorEstoque, 1, 'POINT', 2, 'COMMA')}">
@@ -87,7 +89,7 @@
     </div>
 
     <!-- Resumo financeiro -->
-    <div class="dashboard-section">
+    <div class="dashboard-section dashboard-section--summary">
 
         <h2>Resumo financeiro</h2>
 
@@ -119,7 +121,7 @@
     </div>
 
     <!-- Gráfico de evolução financeira -->
-    <div class="dashboard-section">
+    <div class="dashboard-section dashboard-section--chart">
 
         <h2>Evolução financeira</h2>
 
@@ -127,13 +129,17 @@
             Comparativo entre receitas e despesas no período selecionado.
         </p>
 
+        <div id="legendaEvolucaoFinanceira" class="grafico-legenda-externa"></div>
+
         <div class="grafico-container">
             <canvas id="graficoEvolucaoFinanceira"></canvas>
         </div>
 
     </div>
 
-    <div class="dashboard-section">
+    <!-- Gráfico de vendas por produto/peça -->
+    <div class="dashboard-section dashboard-section--chart">
+
         <h2>Vendas por produto/peça</h2>
 
         <p class="dashboard-description">
@@ -143,9 +149,12 @@
         <div class="grafico-container">
             <canvas id="graficoVendasProdutos"></canvas>
         </div>
+
     </div>
 
-    <div class="dashboard-section">
+    <!-- Gráfico de despesas por categoria -->
+    <div class="dashboard-section dashboard-section--chart">
+
         <h2>Despesas por categoria</h2>
 
         <p class="dashboard-description">
@@ -155,10 +164,11 @@
         <div class="grafico-container">
             <canvas id="graficoDespesasCategorias"></canvas>
         </div>
+
     </div>
 
     <!-- Indicadores de estoque -->
-    <div class="dashboard-section">
+    <div class="dashboard-section dashboard-section--chart">
 
         <h2>Estoque</h2>
 
@@ -178,7 +188,7 @@
 
         <div th:unless="${#lists.isEmpty(materiaisBaixoEstoque)}">
 
-            <table class="data-table">
+            <table class="data-table dashboard-stock-table">
 
                 <thead>
                 <tr>
@@ -192,8 +202,8 @@
                 <tbody>
                 <tr th:each="material : ${materiaisBaixoEstoque}">
                     <td th:text="${material.nomeMaterial}"></td>
-                    <td th:text="${material.quantidadeEstoqueMaterial}"></td>
-                    <td th:text="${material.quantidadeMinimaMaterial}"></td>
+                    <td th:text="${#numbers.formatDecimal(material.quantidadeEstoqueMaterial, 1, 'POINT', 2, 'COMMA')}"></td>
+                    <td th:text="${#numbers.formatDecimal(material.quantidadeMinimaMaterial, 1, 'POINT', 2, 'COMMA')}"></td>
                     <td th:text="${material.unidadeMedidaMaterial}"></td>
                 </tr>
                 </tbody>
@@ -205,11 +215,15 @@
     </div>
 
     <!-- Biblioteca Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
 
     <!-- Dados e configuração dos gráficos -->
     <script th:inline="javascript">
+
+        // Configurações visuais padrão dos gráficos
+        Chart.defaults.font.family = "Inter";
+        Chart.defaults.color = "#6F6568";
+        Chart.defaults.borderColor = "#EFE6E0";
 
         const labelsGrafico = /*[[${labelsGrafico}]]*/ [];
         const receitasGrafico = /*[[${valoresReceitasGrafico}]]*/ [];
@@ -221,7 +235,7 @@
 
         if (elementoGrafico) {
 
-            new Chart(elementoGrafico, {
+            const graficoEvolucao = new Chart(elementoGrafico, {
 
                 type: "line",
 
@@ -234,17 +248,23 @@
                             data: receitasGrafico,
                             borderColor: "#2E8B57",
                             backgroundColor: "rgba(46, 139, 87, 0.10)",
-                            borderWidth: 2,
-                            tension: 0.3,
+                            borderWidth: 2.5,
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            pointBackgroundColor: "#2E8B57",
+                            tension: 0.35,
                             fill: true
                         },
                         {
                             label: "Despesas",
                             data: despesasGrafico,
-                            borderColor: "#A51D1D",
-                            backgroundColor: "rgba(165, 29, 29, 0.08)",
-                            borderWidth: 2,
-                            tension: 0.3,
+                            borderColor: "#C23B32",
+                            backgroundColor: "rgba(194, 59, 50, 0.08)",
+                            borderWidth: 2.5,
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            pointBackgroundColor: "#C23B32",
+                            tension: 0.35,
                             fill: true
                         }
                     ]
@@ -261,7 +281,7 @@
 
                     plugins: {
                         legend: {
-                            position: "top"
+                            display: false
                         },
 
                         tooltip: {
@@ -303,6 +323,47 @@
 
             });
 
+            // Criação da legenda externa
+            const legendaEvolucao = document.getElementById(
+                "legendaEvolucaoFinanceira"
+            );
+
+            if (legendaEvolucao) {
+
+                graficoEvolucao.data.datasets.forEach(function (dataset, index) {
+
+                    const botao = document.createElement("button");
+                    botao.type = "button";
+                    botao.className = "grafico-legenda-item";
+                    botao.setAttribute("aria-pressed", "true");
+
+                    const indicador = document.createElement("span");
+                    indicador.className = "grafico-legenda-cor";
+                    indicador.style.backgroundColor = dataset.borderColor;
+
+                    const texto = document.createElement("span");
+                    texto.textContent = dataset.label;
+
+                    botao.appendChild(indicador);
+                    botao.appendChild(texto);
+
+                    botao.addEventListener("click", function () {
+
+                        const visivel = graficoEvolucao.isDatasetVisible(index);
+
+                        graficoEvolucao.setDatasetVisibility(index, !visivel);
+                        graficoEvolucao.update();
+
+                        botao.setAttribute("aria-pressed", String(!visivel));
+
+                    });
+
+                    legendaEvolucao.appendChild(botao);
+
+                });
+
+            }
+
         }
 
         // Gráfico de vendas por produto/peça
@@ -322,7 +383,10 @@
                         label: "Receita por produto",
                         data: valoresProdutos,
                         backgroundColor: "#A51D1D",
-                        borderRadius: 5
+                        borderRadius: 5,
+                        maxBarThickness: 38,
+                        categoryPercentage: 0.65,
+                        barPercentage: 0.8
                     }]
                 },
                 options: {
@@ -344,9 +408,17 @@
                             }
                         }
                     },
+
                     scales: {
                         x: {
                             beginAtZero: true,
+                            grid: {
+                                color: "#F1E9E5",
+                                drawBorder: false
+                            },
+                            border: {
+                                display: false
+                            },
                             ticks: {
                                 callback: function(value) {
                                     return Number(value).toLocaleString("pt-BR", {
@@ -356,8 +428,18 @@
                                     });
                                 }
                             }
+                        },
+                        y: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            border: {
+                                display: false
+                            }
                         }
                     }
+
                 }
             });
         }
@@ -395,6 +477,8 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    radius: "85%",
+                    cutout: "60%",
                     plugins: {
                         legend: {
                             position: "bottom"
@@ -402,11 +486,23 @@
                         tooltip: {
                             callbacks: {
                                 label: function (context) {
+
+                                    const valor = Number(context.raw);
+
+                                    const total = context.dataset.data.reduce(function (soma, item) {
+                                        return soma + Number(item);
+                                    }, 0);
+
+                                    const percentual = total > 0
+                                        ? (valor / total * 100).toFixed(1)
+                                        : "0.0";
+
                                     return context.label + ": " +
-                                        Number(context.raw).toLocaleString("pt-BR", {
+                                        valor.toLocaleString("pt-BR", {
                                             style: "currency",
                                             currency: "BRL"
-                                        });
+                                        }) +
+                                        " (" + percentual.replace(".", ",") + "%)";
                                 }
                             }
                         }
@@ -416,7 +512,6 @@
         }
 
     </script>
-
 
 </section>
 

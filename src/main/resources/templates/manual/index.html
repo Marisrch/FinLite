@@ -1,0 +1,653 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Manual de uso', ~{::conteudo})}">
+
+<body>
+
+<section th:fragment="conteudo">
+
+    <div class="page-header">
+        <div>
+            <h1>Manual de uso</h1>
+            <p>Aprenda a usar cada parte do FinLite, passo a passo.</p>
+        </div>
+
+        <a th:href="@{/painel}" class="btn-secondary">Voltar ao painel</a>
+    </div>
+
+    <div class="manual" id="topo">
+
+        <!-- ================= ÍNDICE ================= -->
+        <nav class="manual-indice" aria-label="Índice do manual">
+            <h2>Neste manual</h2>
+            <ul>
+                <li><a href="#comecar">Por onde começar</a></li>
+                <li><a href="#tela">Conhecendo a tela</a></li>
+                <li><a href="#empreendedor">Empreendedor</a></li>
+                <li><a href="#vendas">Vendas</a></li>
+                <li><a href="#receitas">Receitas</a></li>
+                <li><a href="#despesas">Despesas e compra de material</a></li>
+                <li><a href="#estoque">Estoque</a></li>
+                <li><a href="#movimentacoes">Movimentações de estoque</a></li>
+                <li><a href="#painel">Painel financeiro</a></li>
+                <li><a href="#filtros">Filtros das tabelas</a></li>
+                <li><a href="#duvidas">Dúvidas frequentes</a></li>
+            </ul>
+        </nav>
+
+        <!-- ================= POR ONDE COMEÇAR ================= -->
+        <section class="manual-section" id="comecar">
+            <h2>Por onde começar</h2>
+            <p>
+                O FinLite ajuda você a acompanhar o dinheiro e o estoque do seu
+                negócio. Na primeira vez que usar, siga esta ordem para tudo
+                funcionar bem:
+            </p>
+
+            <ol class="manual-passos">
+                <li>
+                    <strong>Cadastre o empreendedor.</strong>
+                    No menu, clique em <span class="manual-botao">Empreendedor</span>.
+                    Sem esse cadastro o sistema não deixa registrar vendas,
+                    receitas, despesas nem materiais.
+                </li>
+                <li>
+                    <strong>Cadastre seus materiais</strong> (linhas, agulhas,
+                    enchimento…). Vá em <span class="manual-botao">Estoque</span>
+                    e clique em <span class="manual-botao">+ Novo material</span>.
+                </li>
+                <li>
+                    <strong>Registre as compras de material.</strong> Em
+                    <span class="manual-botao">Despesas</span>, escolha o material
+                    comprado. É isso que coloca a quantidade no estoque.
+                </li>
+                <li>
+                    <strong>Registre suas vendas</strong> em
+                    <span class="manual-botao">Vendas</span>. Quando o pedido
+                    estiver finalizado, mude o status para <em>Concluída</em>.
+                </li>
+                <li>
+                    <strong>Acompanhe tudo no Painel.</strong> Ele mostra quanto
+                    entrou, quanto saiu, o saldo e como está o estoque.
+                </li>
+            </ol>
+
+            <div class="manual-dica">
+                <strong>Dica</strong>
+                O cadastro do empreendedor e dos materiais é feito uma vez.
+                No dia a dia você só vai repetir os passos 3 a 5.
+            </div>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= CONHECENDO A TELA ================= -->
+        <section class="manual-section" id="tela">
+            <h2>Conhecendo a tela</h2>
+
+            <h3>Menu lateral</h3>
+            <p>
+                O menu fica à esquerda (no celular, ele aparece no topo e você
+                pode deslizar para o lado). A página em que você está fica
+                destacada em rosa.
+            </p>
+            <dl class="manual-campos">
+                <dt>Painel</dt>
+                <dd>Resumo do negócio: receitas, despesas, saldo, gráficos e estoque.</dd>
+                <dt>Vendas</dt>
+                <dd>Lista e cadastro das vendas e encomendas.</dd>
+                <dt>Receitas</dt>
+                <dd>Outras entradas de dinheiro que não são vendas cadastradas.</dd>
+                <dt>Despesas</dt>
+                <dd>Gastos do negócio, inclusive a compra de materiais.</dd>
+                <dt>Estoque</dt>
+                <dd>Materiais cadastrados, quantidades e histórico de movimentações.</dd>
+                <dt>Empreendedor</dt>
+                <dd>Cadastro de quem é responsável pelo negócio.</dd>
+                <dt>Manual de uso</dt>
+                <dd>Esta página, sempre disponível no final do menu.</dd>
+            </dl>
+
+            <h3>Listas (tabelas)</h3>
+            <ul class="manual-lista">
+                <li>
+                    O botão no canto superior direito (por exemplo
+                    <span class="manual-botao">+ Nova venda</span>) abre o
+                    formulário para cadastrar um novo registro.
+                </li>
+                <li>
+                    Em cada linha, <span class="manual-botao">Editar</span> altera
+                    os dados e <span class="manual-botao">Excluir</span> remove o
+                    registro. Antes de excluir, o sistema sempre pede uma
+                    confirmação.
+                </li>
+                <li>
+                    A setinha <strong>▼</strong> ao lado do nome de cada coluna
+                    permite filtrar a lista (veja
+                    <a href="#filtros">Filtros das tabelas</a>).
+                </li>
+                <li>
+                    Em telas pequenas, como a do celular, arraste a tabela para
+                    o lado para ver todas as colunas.
+                </li>
+            </ul>
+
+            <h3>Mensagens e formulários</h3>
+            <ul class="manual-lista">
+                <li><strong>Mensagem verde:</strong> deu tudo certo.</li>
+                <li>
+                    <strong>Mensagem vermelha:</strong> algo precisa ser corrigido.
+                    Leia o texto, ele explica o que fazer.
+                </li>
+                <li>
+                    Campos com problema ficam com a borda vermelha e uma frase
+                    explicativa logo abaixo.
+                </li>
+                <li>
+                    Campos marcados como obrigatórios precisam ser preenchidos
+                    para salvar.
+                </li>
+                <li>
+                    O botão <span class="manual-botao">Cancelar</span> volta sem
+                    salvar nada.
+                </li>
+            </ul>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= EMPREENDEDOR ================= -->
+        <section class="manual-section" id="empreendedor">
+            <h2>Empreendedor</h2>
+            <p>
+                É o cadastro de quem cuida do negócio. Ele é necessário para
+                registrar vendas, receitas, despesas e materiais.
+            </p>
+
+            <h3>Campos</h3>
+            <dl class="manual-campos">
+                <dt>Nome completo</dt>
+                <dd>Obrigatório.</dd>
+                <dt>CPF</dt>
+                <dd>Opcional. Se preencher, informe 11 números (com ou sem pontos e traço).</dd>
+                <dt>E-mail</dt>
+                <dd>Opcional.</dd>
+                <dt>Telefone</dt>
+                <dd>Opcional.</dd>
+            </dl>
+
+            <h3>Como cadastrar</h3>
+            <ol class="manual-passos">
+                <li>No menu, clique em <span class="manual-botao">Empreendedor</span>.</li>
+                <li>Preencha os campos.</li>
+                <li>Clique em <span class="manual-botao">Salvar empreendedor</span>.</li>
+                <li>Aparece a mensagem “Empreendedor cadastrado com sucesso!”.</li>
+            </ol>
+
+            <div class="manual-dica">
+                <strong>Dica</strong>
+                Se aparecer o aviso “Cadastre um empreendedor antes de…” em outra
+                tela, é só fazer este cadastro e voltar.
+            </div>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= VENDAS ================= -->
+        <section class="manual-section" id="vendas">
+            <h2>Vendas</h2>
+            <p>
+                Aqui você registra cada venda ou encomenda: quem comprou, o que
+                foi vendido, quanto custou e em que situação está o pedido.
+            </p>
+
+            <h3>Campos do formulário</h3>
+            <dl class="manual-campos">
+                <dt>Nome do cliente</dt>
+                <dd>Obrigatório.</dd>
+                <dt>Produto / Peça</dt>
+                <dd>Obrigatório. Ex.: Bolsa de crochê.</dd>
+                <dt>Valor da venda (R$)</dt>
+                <dd>Obrigatório. Precisa ser maior que zero.</dd>
+                <dt>Forma de pagamento</dt>
+                <dd>Obrigatório: PIX, Dinheiro, Cartão de crédito, Cartão de débito, Transferência ou Outro.</dd>
+                <dt>Status da venda</dt>
+                <dd>Obrigatório: Em andamento, Concluída ou Cancelada.</dd>
+                <dt>Data de entrega</dt>
+                <dd>Obrigatório. Quando o pedido será (ou foi) entregue.</dd>
+                <dt>Data de registro</dt>
+                <dd>Obrigatório. A data em que a venda foi feita. É ela que o Painel usa para saber em que período a venda entra.</dd>
+            </dl>
+
+            <h3>Como registrar uma venda</h3>
+            <ol class="manual-passos">
+                <li>Clique em <span class="manual-botao">Vendas</span> no menu.</li>
+                <li>Clique em <span class="manual-botao">+ Nova venda</span>.</li>
+                <li>Preencha os campos e clique em <span class="manual-botao">Salvar venda</span>.</li>
+            </ol>
+
+            <h3>Corrigir ou excluir</h3>
+            <p>
+                Na lista, use <span class="manual-botao">Editar</span> para mudar
+                qualquer dado (inclusive o status) ou
+                <span class="manual-botao">Excluir</span> para remover a venda.
+            </p>
+
+            <h3>O que cada status significa</h3>
+            <dl class="manual-campos">
+                <dt>Em andamento</dt>
+                <dd>Encomenda ainda não finalizada. Não entra nas receitas do Painel.</dd>
+                <dt>Concluída</dt>
+                <dd>Venda finalizada. <strong>É a única que entra nas receitas do Painel.</strong></dd>
+                <dt>Cancelada</dt>
+                <dd>Venda que não aconteceu. Não entra nas receitas.</dd>
+            </dl>
+
+            <div class="manual-dica">
+                <strong>Dica</strong>
+                Cadastre a encomenda como <em>Em andamento</em> e, quando
+                terminar, clique em <span class="manual-botao">Editar</span> e
+                mude para <em>Concluída</em>.
+            </div>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= RECEITAS ================= -->
+        <section class="manual-section" id="receitas">
+            <h2>Receitas</h2>
+            <p>
+                Use esta tela para as <strong>receitas adicionais</strong>:
+                dinheiro que entrou no negócio e que não é uma venda cadastrada
+                em Vendas (por exemplo, uma aula ou um serviço).
+            </p>
+
+            <div class="manual-atencao">
+                <strong>Atenção</strong>
+                Não registre a mesma venda em Vendas e em Receitas, senão o valor
+                será contado duas vezes. Vendas com cliente e produto ficam em
+                <a href="#vendas">Vendas</a>.
+            </div>
+
+            <h3>Campos do formulário</h3>
+            <dl class="manual-campos">
+                <dt>Data da receita</dt>
+                <dd>Quando o dinheiro entrou.</dd>
+                <dt>Descrição</dt>
+                <dd>Obrigatório. Ex.: Serviço de artesanato.</dd>
+                <dt>Categoria</dt>
+                <dd>Obrigatório: Serviços, Vendas diversas, Encomendas ou Outros.</dd>
+                <dt>Valor total da receita (R$)</dt>
+                <dd>Obrigatório. Precisa ser maior que zero.</dd>
+            </dl>
+
+            <h3>Como registrar</h3>
+            <ol class="manual-passos">
+                <li>Clique em <span class="manual-botao">Receitas</span> no menu.</li>
+                <li>Clique em <span class="manual-botao">+ Nova receita</span>.</li>
+                <li>Preencha e clique em <span class="manual-botao">Salvar receita</span>.</li>
+            </ol>
+            <p>
+                Para corrigir ou apagar, use <span class="manual-botao">Editar</span>
+                ou <span class="manual-botao">Excluir</span> na linha da receita.
+            </p>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= DESPESAS ================= -->
+        <section class="manual-section" id="despesas">
+            <h2>Despesas e compra de material</h2>
+            <p>
+                Aqui você registra tudo o que o negócio gastou. Existem dois
+                casos: a <strong>despesa comum</strong> (conta de luz, aluguel…)
+                e a <strong>compra de material</strong>, que também atualiza o
+                estoque.
+            </p>
+
+            <h3>Campos do formulário</h3>
+            <dl class="manual-campos">
+                <dt>Data da despesa</dt>
+                <dd>Quando o gasto aconteceu.</dd>
+                <dt>Descrição</dt>
+                <dd>Obrigatório. Ex.: Compra de novelos de linha.</dd>
+                <dt>Categoria</dt>
+                <dd>Obrigatório: Materiais, Contas, Aluguel, Transporte, Manutenção ou Outros.</dd>
+                <dt>Material relacionado (opcional)</dt>
+                <dd>Escolha um material <strong>somente</strong> se for uma compra que deve entrar no estoque.</dd>
+                <dt>Quantidade comprada</dt>
+                <dd>Preencha na compra de material. Não pode ser negativa.</dd>
+                <dt>Custo unitário (R$)</dt>
+                <dd>Preço de cada unidade comprada. Não pode ser negativo.</dd>
+                <dt>Valor total da despesa (R$)</dt>
+                <dd>Na despesa comum, informe você. Na compra de material, é calculado sozinho.</dd>
+            </dl>
+
+            <h3>Despesa comum</h3>
+            <ol class="manual-passos">
+                <li>Clique em <span class="manual-botao">Despesas</span> e depois em <span class="manual-botao">+ Nova despesa</span>.</li>
+                <li>Preencha data, descrição e categoria.</li>
+                <li>Deixe o material como “Nenhum material — despesa comum”.</li>
+                <li>Informe o valor total (maior que zero) e clique em <span class="manual-botao">Salvar despesa</span>.</li>
+            </ol>
+
+            <h3>Compra de material (atualiza o estoque)</h3>
+            <ol class="manual-passos">
+                <li>Cadastre o material antes, em <a href="#estoque">Estoque</a>, se ainda não existir.</li>
+                <li>Em <span class="manual-botao">+ Nova despesa</span>, preencha data, descrição e categoria.</li>
+                <li>Escolha o <strong>Material relacionado</strong>.</li>
+                <li>Informe a <strong>quantidade comprada</strong> e o <strong>custo unitário</strong>.</li>
+                <li>O valor total é calculado automaticamente (quantidade × custo). Clique em <span class="manual-botao">Salvar despesa</span>.</li>
+            </ol>
+
+            <div class="manual-dica">
+                <strong>O que acontece sozinho</strong>
+                Ao salvar uma compra de material, a quantidade é somada ao
+                estoque e uma entrada aparece no histórico de movimentações.
+                Se você editar a compra, o estoque é ajustado pela diferença. Se
+                excluir a despesa, a entrada é desfeita.
+            </div>
+
+            <div class="manual-atencao">
+                <strong>Atenção</strong>
+                Se parte do material comprado já foi usada, o sistema pode não
+                deixar excluir a compra, porque o estoque ficaria negativo.
+            </div>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= ESTOQUE ================= -->
+        <section class="manual-section" id="estoque">
+            <h2>Estoque</h2>
+            <p>
+                Mostra todos os materiais cadastrados, quanto você tem de cada um
+                e quais precisam ser repostos.
+            </p>
+
+            <h3>O que aparece na lista</h3>
+            <dl class="manual-campos">
+                <dt>Material e Categoria</dt>
+                <dd>Nome e tipo do material.</dd>
+                <dt>Qtd. atual</dt>
+                <dd>Quanto você tem agora.</dd>
+                <dt>Qtd. mínima</dt>
+                <dd>O limite que você definiu para avisar de reposição.</dd>
+                <dt>Unidade</dt>
+                <dd>Como o material é medido (unidade, metro, rolo…).</dd>
+                <dt>Custo unit.</dt>
+                <dd>Custo estimado de cada unidade.</dd>
+                <dt>Valor estoque</dt>
+                <dd>Quantidade atual × custo unitário.</dd>
+                <dt>Situação</dt>
+                <dd><em>Normal</em> quando há material suficiente, ou <em>Estoque baixo</em> quando a quantidade atual chegou ao mínimo ou ficou abaixo dele.</dd>
+            </dl>
+
+            <h3>Cadastrar um material</h3>
+            <ol class="manual-passos">
+                <li>Clique em <span class="manual-botao">Estoque</span> no menu.</li>
+                <li>Clique em <span class="manual-botao">+ Novo material</span>.</li>
+                <li>Preencha o formulário (campos abaixo).</li>
+                <li>Clique em <span class="manual-botao">Salvar material</span>.</li>
+            </ol>
+
+            <dl class="manual-campos">
+                <dt>Nome do material</dt>
+                <dd>Obrigatório. Ex.: Linha de algodão.</dd>
+                <dt>Categoria</dt>
+                <dd>Obrigatório. Digite uma nova ou escolha uma que já existe.</dd>
+                <dt>Marca e Cor</dt>
+                <dd>Opcionais. Ex.: Círculo, Vermelho.</dd>
+                <dt>Unidade de medida</dt>
+                <dd>Obrigatório: Unidade, Metro, Centímetro, Quilograma, Grama, Litro, Pacote ou Rolo.</dd>
+                <dt>Quantidade mínima em estoque</dt>
+                <dd>Obrigatório. Quando a quantidade chegar nesse número, a situação muda para “Estoque baixo”.</dd>
+                <dt>Custo unitário estimado (R$)</dt>
+                <dd>Opcional. Usado para calcular o valor do estoque.</dd>
+            </dl>
+
+            <div class="manual-atencao">
+                <strong>Atenção</strong>
+                O material novo começa com estoque <strong>zerado</strong>. A
+                quantidade aumenta quando você registra uma compra em
+                <a href="#despesas">Despesas</a> e diminui quando registra uma
+                saída. Confira os dados antes de salvar: por enquanto, a tela
+                não permite editar nem excluir um material depois de cadastrado.
+            </div>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= MOVIMENTAÇÕES ================= -->
+        <section class="manual-section" id="movimentacoes">
+            <h2>Movimentações de estoque</h2>
+            <p>
+                É o histórico de tudo que entrou e saiu do estoque. Para abrir,
+                vá em <span class="manual-botao">Estoque</span> e clique em
+                <span class="manual-botao">Histórico de movimentações</span>.
+            </p>
+
+            <h3>Colunas</h3>
+            <p>ID, Data, Material, Tipo (entrada ou saída), Quantidade, Motivo e Ações.</p>
+
+            <h3>Entradas</h3>
+            <p>
+                As entradas aparecem <strong>automaticamente</strong> quando você
+                registra uma compra de material em
+                <a href="#despesas">Despesas</a>.
+            </p>
+
+            <h3>Registrar uma saída</h3>
+            <p>Use quando gastar ou perder material (por exemplo, ao produzir uma peça).</p>
+            <ol class="manual-passos">
+                <li>No histórico, clique em <span class="manual-botao">Registrar saída</span>.</li>
+                <li>Escolha o <strong>Material</strong>.</li>
+                <li>Informe a <strong>Quantidade</strong> (maior que zero).</li>
+                <li>Escreva o <strong>Motivo</strong>. Ex.: Uso na produção.</li>
+                <li>Clique em <span class="manual-botao">Registrar movimentação</span>.</li>
+            </ol>
+
+            <h3>Excluir uma movimentação</h3>
+            <p>
+                Clique em <span class="manual-botao">Excluir</span> e confirme: o
+                estoque é atualizado. Movimentações que vieram de uma compra
+                (despesa) não têm o botão Excluir; para desfazê-las, exclua a
+                despesa correspondente.
+            </p>
+
+            <div class="manual-atencao">
+                <strong>Atenção</strong>
+                Não é possível registrar uma saída maior do que a quantidade
+                disponível. Nesse caso aparece o aviso “Estoque insuficiente
+                para realizar esta saída.”
+            </div>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= PAINEL ================= -->
+        <section class="manual-section" id="painel">
+            <h2>Painel financeiro</h2>
+            <p>
+                É a tela de resumo do negócio. Ela se atualiza sozinha com o que
+                você registra nas outras telas.
+            </p>
+
+            <h3>Escolher o período</h3>
+            <p>
+                No topo, informe a <strong>Data inicial</strong> e a
+                <strong>Data final</strong> e clique em
+                <span class="manual-botao">Filtrar período</span>. Quando você
+                abre o Painel, ele mostra o mês atual: do dia 1º até hoje.
+            </p>
+
+            <h3>Os quatro cartões</h3>
+            <dl class="manual-campos">
+                <dt>Receitas</dt>
+                <dd>Vendas concluídas + outras receitas do período.</dd>
+                <dt>Despesas</dt>
+                <dd>Total gasto no período.</dd>
+                <dt>Saldo</dt>
+                <dd>Receitas menos despesas. Aparece em verde quando é positivo e em vermelho quando é negativo.</dd>
+                <dt>Valor em estoque</dt>
+                <dd>Quantidade atual × custo unitário de todos os materiais. Não muda com o período escolhido.</dd>
+            </dl>
+
+            <h3>Resumo financeiro</h3>
+            <p>
+                Mostra separadamente as receitas de vendas concluídas, as outras
+                receitas e o total de despesas.
+            </p>
+
+            <h3>Gráficos</h3>
+            <ul class="manual-lista">
+                <li><strong>Evolução financeira:</strong> compara receitas e despesas ao longo do período. Em períodos de até cerca de um mês, mostra dia a dia; em períodos maiores, mês a mês.</li>
+                <li><strong>Vendas por produto/peça:</strong> quais produtos mais geraram receita (somente vendas concluídas).</li>
+                <li><strong>Despesas por categoria:</strong> como os gastos se dividem entre as categorias.</li>
+                <li>Nos gráficos, clique em um item da <strong>legenda</strong> (abaixo do gráfico) para esconder ou mostrar aquela informação.</li>
+            </ul>
+
+            <h3>Estoque no Painel</h3>
+            <p>
+                Mostra quantos materiais existem, quantos estão no nível mínimo
+                ou abaixo e a lista deles, para você saber o que precisa
+                comprar.
+            </p>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= FILTROS ================= -->
+        <section class="manual-section" id="filtros">
+            <h2>Filtros das tabelas</h2>
+            <p>
+                As listas de Vendas, Receitas, Despesas, Estoque e
+                Movimentações têm um filtro em cada coluna para você encontrar
+                o que procura.
+            </p>
+
+            <ol class="manual-passos">
+                <li>Clique na setinha <strong>▼</strong> ao lado do nome da coluna.</li>
+                <li>Abre uma janelinha com a caixa <em>Pesquisar…</em> e a lista dos valores daquela coluna.</li>
+                <li>Digite na caixa para achar um valor rapidamente, ou desmarque o que não quer ver. Para ver só um valor, desmarque <em>Selecionar todos</em> e marque apenas ele.</li>
+                <li>Clique em <span class="manual-botao">Aplicar</span>. A lista mostra só o que você escolheu.</li>
+                <li>Para tirar o filtro daquela coluna, abra a janelinha e clique em <span class="manual-botao">Limpar</span>.</li>
+            </ol>
+
+            <ul class="manual-lista">
+                <li>Você pode usar filtros em <strong>várias colunas ao mesmo tempo</strong>. Por exemplo: Status “Concluída” e Pagamento “PIX”.</li>
+                <li>A setinha fica <strong>vermelho-escura</strong> nas colunas com filtro ativo.</li>
+                <li>Se nada combinar, aparece “Nenhum registro encontrado com esses filtros.”</li>
+                <li>Os filtros valem enquanto a página está aberta. Ao recarregar ou sair da tela, a lista volta completa.</li>
+            </ul>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+        <!-- ================= DÚVIDAS FREQUENTES ================= -->
+        <section class="manual-section manual-faq" id="duvidas">
+            <h2>Dúvidas frequentes</h2>
+
+            <details>
+                <summary>Registrei uma venda e ela não aparece nas receitas do Painel.</summary>
+                <p>
+                    Confira duas coisas: se o status da venda é
+                    <em>Concluída</em> e se a <em>Data de registro</em> está
+                    dentro do período escolhido no Painel. Vendas em andamento
+                    ou canceladas não entram nas receitas.
+                </p>
+            </details>
+
+            <details>
+                <summary>Aparece “Cadastre um empreendedor antes…”.</summary>
+                <p>
+                    Faça o cadastro em <span class="manual-botao">Empreendedor</span>
+                    no menu e tente de novo.
+                </p>
+            </details>
+
+            <details>
+                <summary>Comprei material, mas o estoque não aumentou.</summary>
+                <p>
+                    A despesa precisa ter o <em>Material relacionado</em>
+                    escolhido e a quantidade comprada preenchida. Edite a despesa
+                    e selecione o material.
+                </p>
+            </details>
+
+            <details>
+                <summary>O material que comprei não aparece na lista de materiais da despesa.</summary>
+                <p>
+                    Cadastre o material antes, em
+                    <span class="manual-botao">Estoque</span> →
+                    <span class="manual-botao">+ Novo material</span>.
+                </p>
+            </details>
+
+            <details>
+                <summary>Aparece “Estoque insuficiente para realizar esta saída.”</summary>
+                <p>
+                    A quantidade que você tentou tirar é maior do que existe no
+                    estoque. Confira a quantidade atual em Estoque. Se você
+                    comprou o material e esqueceu de registrar, lance a compra em
+                    Despesas primeiro.
+                </p>
+            </details>
+
+            <details>
+                <summary>Não consigo excluir uma movimentação de estoque.</summary>
+                <p>
+                    Se ela veio de uma compra de material, ela está ligada a uma
+                    despesa. Exclua a despesa correspondente e o estoque volta ao
+                    que era.
+                </p>
+            </details>
+
+            <details>
+                <summary>Não consigo excluir uma despesa de compra de material.</summary>
+                <p>
+                    Provavelmente você já usou parte desse material e o estoque
+                    ficaria negativo. Confira as saídas registradas no histórico
+                    de movimentações.
+                </p>
+            </details>
+
+            <details>
+                <summary>Errei um valor. Como corrijo?</summary>
+                <p>
+                    Em Vendas, Receitas e Despesas, clique em
+                    <span class="manual-botao">Editar</span> na linha do registro,
+                    corrija e salve. Se preferir, use
+                    <span class="manual-botao">Excluir</span> e cadastre de novo.
+                </p>
+            </details>
+
+            <details>
+                <summary>Os números do Painel mudaram sozinhos.</summary>
+                <p>
+                    Provavelmente o período está diferente. Confira a data
+                    inicial e a final e clique em
+                    <span class="manual-botao">Filtrar período</span>. O valor em
+                    estoque não depende do período.
+                </p>
+            </details>
+
+            <details>
+                <summary>O saldo está vermelho.</summary>
+                <p>
+                    Significa que, no período escolhido, as despesas foram maiores
+                    do que as receitas.
+                </p>
+            </details>
+
+            <a href="#topo" class="manual-voltar">↑ Voltar ao índice</a>
+        </section>
+
+    </div>
+
+</section>
+
+</body>
+</html>
