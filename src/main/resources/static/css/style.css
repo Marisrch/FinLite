@@ -816,14 +816,15 @@ table[data-tabela-filtros] td {
 #tabelaDespesas th:nth-child(7) { width: 19%; }
 
 /* Estoque */
-#tabelaEstoque th:nth-child(1) { width: 15%; }
-#tabelaEstoque th:nth-child(2) { width: 15%; }
-#tabelaEstoque th:nth-child(3) { width: 10%; }
-#tabelaEstoque th:nth-child(4) { width: 10%; }
-#tabelaEstoque th:nth-child(5) { width: 10%; }
-#tabelaEstoque th:nth-child(6) { width: 11%; }
-#tabelaEstoque th:nth-child(7) { width: 13%; }
-#tabelaEstoque th:nth-child(8) { width: 16%; }
+#tabelaEstoque th:nth-child(1) { width: 14%; }
+#tabelaEstoque th:nth-child(2) { width: 12%; }
+#tabelaEstoque th:nth-child(3) { width: 9%; }
+#tabelaEstoque th:nth-child(4) { width: 9%; }
+#tabelaEstoque th:nth-child(5) { width: 9%; }
+#tabelaEstoque th:nth-child(6) { width: 10%; }
+#tabelaEstoque th:nth-child(7) { width: 11%; }
+#tabelaEstoque th:nth-child(8) { width: 10%; }
+#tabelaEstoque th:nth-child(9) { width: 16%; }
 
 /* Movimentações */
 #tabelaMovimentacoes th:nth-child(1) { width: 6%; }
@@ -1560,4 +1561,69 @@ table[data-tabela-filtros] td .btn-secondary {
 
 .manual-faq details p {
     margin: 10px 0 0 18px;
+}
+
+/* ==========================================================
+   15. RELATÓRIO E IMPRESSÃO
+========================================================== */
+
+.btn-icone svg {
+    width: 18px;
+    height: 18px;
+}
+
+.relatorio-secao {
+    margin-top: 28px;
+}
+
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
+@media print {
+    * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    body {
+        background: #FFFFFF;
+    }
+
+    .main-header,
+    .sidebar,
+    .no-print {
+        display: none !important;
+    }
+
+    .app-layout {
+        display: block;
+        min-height: 0;
+    }
+
+    .main-content {
+        padding: 0;
+    }
+
+    .main-content > * {
+        max-width: none;
+    }
+
+    table,
+    .dashboard-card {
+        box-shadow: none;
+    }
+
+    tr {
+        break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group; /* repete o cabeçalho em cada página */
+    }
+
+    h2 {
+        break-after: avoid;
+    }
 }

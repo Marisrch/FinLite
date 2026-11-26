@@ -13,6 +13,22 @@
             <h1>Painel financeiro</h1>
             <p>Acompanhe os resultados e a situação do seu negócio.</p>
         </div>
+
+        <div class="page-actions">
+            <a th:href="@{/relatorio(dataInicio=${dataInicio}, dataFim=${dataFim})}"
+               class="btn-secondary btn-icone"
+               target="_blank" rel="noopener"
+               title="Gerar relatório do período"
+               aria-label="Gerar relatório do período">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                     aria-hidden="true">
+                    <path d="M6 9V3h12v6"/>
+                    <rect x="6" y="14" width="12" height="7" rx="1"/>
+                    <path d="M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/>
+                </svg>
+            </a>
+        </div>
     </div>
 
     <!-- Filtro de período -->

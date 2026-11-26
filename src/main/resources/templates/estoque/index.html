@@ -44,6 +44,8 @@
             <th>Custo unit. <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
             <th>Valor estoque <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
             <th>Situação <button type="button" class="btn-filtro" title="Filtrar">▼</button></th>
+            <th data-coluna-acoes>Ações</th>
+
         </tr>
         </thead>
 
@@ -81,10 +83,24 @@
                 </span>
             </td>
 
+
+            <td>
+                <div class="form-actions">
+                    <a th:href="@{/materiais/editar/{id}(id=${material.idMaterial})}"
+                       class="btn-secondary">Editar</a>
+
+                    <form th:action="@{/materiais/excluir/{id}(id=${material.idMaterial})}"
+                          method="post"
+                          onsubmit="return confirm('Tem certeza que deseja excluir este material?');">
+                        <button type="submit" class="btn-secondary">Excluir</button>
+                    </form>
+                </div>
+            </td>
+
         </tr>
 
         <tr th:if="${#lists.isEmpty(materiais)}" class="linha-sem-registros">
-            <td colspan="8">Nenhum material cadastrado.</td>
+            <td colspan="9">Nenhum material cadastrado.</td>
         </tr>
 
         </tbody>

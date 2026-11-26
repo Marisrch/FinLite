@@ -1,7 +1,9 @@
 package br.com.finlite.service.impl;
 
 import br.com.finlite.model.Material;
+import br.com.finlite.repository.LancamentoFinanceiroRepository;
 import br.com.finlite.repository.MaterialRepository;
+import br.com.finlite.repository.MovimentacaoEstoqueRepository;
 import br.com.finlite.service.MaterialService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,17 @@ import java.util.Optional;
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepository materialRepository;
+    private final MovimentacaoEstoqueRepository movimentacaoRepository;
+    private final LancamentoFinanceiroRepository lancamentoRepository;
 
-    public MaterialServiceImpl(MaterialRepository materialRepository) {
+    public MaterialServiceImpl(
+            MaterialRepository materialRepository,
+            MovimentacaoEstoqueRepository movimentacaoRepository,
+            LancamentoFinanceiroRepository lancamentoRepository) {
+
         this.materialRepository = materialRepository;
+        this.movimentacaoRepository = movimentacaoRepository;
+        this.lancamentoRepository = lancamentoRepository;
     }
 
     @Override
@@ -100,6 +110,21 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     @Transactional
     public void excluir(Integer id) {
+
+        if (!materialRepository.existsById(id)){
+
+            throw new EntityNotFoundException("Material não foi encontrado;");
+
+        }
+
+        if( movimentacaoRepository.existsByMaterialIdMaterial(id)
+                || lancamentoRepository.existsByMaterialIdMaterial(id)){
+
+            throw new IllegalStateException(
+                    "Este material possui movimentações ou lançamentos "
+                    + "vinculados e não pode ser excluído.");
+
+        }
         materialRepository.deleteById(id);
     }
 }

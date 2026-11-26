@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout('Relatório', ~{::conteudo})}">
+<body>
+<section th:fragment="conteudo">
+
+    <div class="page-header">
+        <div>
+            <h1>Relatório de movimentações</h1>
+            <p>
+                Período:
+                <strong th:text="${#temporals.format(dataInicio, 'dd/MM/yyyy')}"></strong> a
+                <strong th:text="${#temporals.format(dataFim, 'dd/MM/yyyy')}"></strong>
+                &middot; Gerado em
+                <span th:text="${#temporals.format(geradoEm, 'dd/MM/yyyy HH:mm')}"></span>
+            </p>
+        </div>
+
+        <div class="page-actions no-print">
+            <a th:href="@{/painel(dataInicio=${dataInicio}, dataFim=${dataFim})}"
+               class="btn-secondary">Voltar ao painel</a>
+            <button type="button" class="btn-primary" onclick="window.print()">
+                Imprimir / Salvar PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- Resumo -->
+    <div class="dashboard-grid">
+        <div class="dashboard-card dashboard-card--receita">
+            <h3>Receitas</h3>
+            <p class="dashboard-value"
+               th:text="'R$ ' + ${#numbers.formatDecimal(totalReceitas, 1, 2)}"></p>
+        </div>
+        <div class="dashboard-card dashboard-card--despesa">
+            <h3>Despesas</h3>
+            <p class="dashboard-value"
+               th:text="'R$ ' + ${#numbers.formatDecimal(totalDespesas, 1, 2)}"></p>
+        </div>
+        <div class="dashboard-card dashboard-card--saldo">
+            <h3>Saldo</h3>
+            <p class="dashboard-value"
+               th:text="'R$ ' + ${#numbers.formatDecimal(saldo, 1, 2)}"></p>
+        </div>
+    </div>
+
+    <!-- Movimentações financeiras -->
+    <h2 class="relatorio-secao">Movimentações financeiras</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Data</th><th>Tipo</th><th>Descrição</th><th>Categoria</th><th>Valor (R$)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="linha : ${linhas}">
+            <td th:text="${#temporals.format(linha.data, 'dd/MM/yyyy')}"></td>
+            <td th:text="${linha.tipo}"></td>
+            <td th:text="${linha.descricao}"></td>
+            <td th:text="${linha.categoria}"></td>
+            <td th:text="${#numbers.formatDecimal(linha.valor, 1, 2)}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(linhas)}">
+            <td colspan="5">Nenhuma movimentação financeira no período.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Movimentações de estoque -->
+    <h2 class="relatorio-secao">Movimentações de estoque</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Data</th><th>Material</th><th>Tipo</th><th>Quantidade</th><th>Motivo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="mov : ${movimentacoesEstoque}">
+            <td th:text="${#temporals.format(mov.dataMovimentacao, 'dd/MM/yyyy HH:mm')}"></td>
+            <td th:text="${mov.material.nomeMaterial}"></td>
+            <td th:text="${mov.tipoMovimentacao == 'ENTRADA'} ? 'Entrada' : 'Saída'"></td>
+            <td th:text="${#numbers.formatDecimal(mov.quantidadeMovimentacao, 1, 2)}"></td>
+            <td th:text="${mov.motivoOrigem != null} ? ${mov.motivoOrigem} : '-'"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(movimentacoesEstoque)}">
+            <td colspan="5">Nenhuma movimentação de estoque no período.</td>
+        </tr>
+        </tbody>
+    </table>
+
+</section>
+</body>
+</html>

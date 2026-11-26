@@ -86,9 +86,7 @@ public class DespesaController {
                 .buscarPorId(id)
                 .orElse(null);
 
-        if (lancamento == null ||
-                !"DESPESA".equalsIgnoreCase(
-                        lancamento.getTipoLancamento())) {
+        if (lancamento == null || !"DESPESA".equalsIgnoreCase(lancamento.getTipoLancamento())) {
 
             redirectAttributes.addFlashAttribute(
                     "erro",

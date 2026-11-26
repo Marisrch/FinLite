@@ -23,4 +23,6 @@ public interface LancamentoFinanceiroRepository
             LocalDate dataInicio,
             LocalDate dataFim
     );
+
+    boolean existsByMaterialIdMaterial(Integer idMaterial);
 }

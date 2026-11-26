@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout('Novo material', ~{::conteudo})}">
+      th:replace="~{fragments/layout :: layout('Material', ~{::conteudo})}">
 
 <body>
 <section th:fragment="conteudo">
 
     <div class="page-header">
         <div>
-            <h1>Novo material</h1>
+            <h1 th:text="${material.idMaterial != null} ? 'Editar material' : 'Novo material'">Novo material</h1>
             <p>Cadastre os materiais utilizados no seu negócio.</p>
         </div>
     </div>
@@ -29,6 +29,8 @@
         <input type="hidden"
                name="idEmpreendedor"
                th:value="${idEmpreendedor}">
+
+        <input type="hidden" th:if="${material.idMaterial != null}" th:field="*{idMaterial}">
 
         <div class="form-group">
             <label for="nomeMaterial">Nome do material</label>
@@ -161,9 +163,13 @@
             </small>
         </div>
 
-        <div class="form-info">
+        <div class="form-info" th:if="${material.idMaterial == null}">
             O material será cadastrado com estoque inicial zero.
             As quantidades serão atualizadas pelas movimentações de estoque.
+        </div>
+        <div class="form-info" th:if="${material.idMaterial != null}">
+            A quantidade em estoque não é alterada aqui. Ela muda apenas pelas
+            movimentações de estoque.
         </div>
 
         <div class="form-actions">
@@ -171,7 +177,8 @@
                 Cancelar
             </a>
 
-            <button type="submit" class="btn-primary">
+            <button type="submit" class="btn-primary"
+                    th:text="${material.idMaterial != null} ? 'Salvar alterações' : 'Salvar material'">
                 Salvar material
             </button>
         </div>

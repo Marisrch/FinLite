@@ -5,6 +5,7 @@ import br.com.finlite.model.Empreendedor;
 import br.com.finlite.model.Material;
 import br.com.finlite.service.EmpreendedorService;
 import br.com.finlite.service.MaterialService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -75,6 +76,8 @@ public class MaterialController {
         material.setEmpreendedor(empreendedor.get());
 
         try {
+
+            boolean edicao=  material.getIdMaterial()!= null;
             materialService.salvar(material);
 
             redirectAttributes.addFlashAttribute(
@@ -117,7 +120,42 @@ public class MaterialController {
             model.addAttribute("material", material);
             return prepararFormulario(model);
         }
+
+
     }
+
+    @GetMapping("/editar/{id}")
+
+    public String editar(@PathVariable Integer id, Model model,   RedirectAttributes redirectAttributes){
+        Material material = materialService.buscarPorId(id).orElse(null);
+
+        if (material == null) {
+            redirectAttributes.addFlashAttribute("erro", "Material não encontrado.");
+            return "redirect:/estoque";
+        }
+
+        model.addAttribute("material", material);
+        model.addAttribute("idEmpreendedor",
+                material.getEmpreendedor().getIdEmpreendedor());
+
+        return "materiais/formulario";
+
+    }
+
+
+    @PostMapping("/excluir/{id}")
+    public String excluir(@PathVariable Integer id,
+                          RedirectAttributes redirectAttributes) {
+        try {
+            materialService.excluir(id);
+            redirectAttributes.addFlashAttribute("sucesso",
+                    "Material excluído com sucesso!");
+        } catch (IllegalStateException | EntityNotFoundException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+        }
+        return "redirect:/estoque";
+    }
+
 
     private String prepararFormulario(Model model) {
 
